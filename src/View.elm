@@ -20,6 +20,8 @@ import Html
 type alias View msg =
     { title : String
     , body : Element msg
+    , next : Maybe String
+    , previous : Maybe String
     }
 
 
@@ -39,6 +41,8 @@ map : (msg1 -> msg2) -> View msg1 -> View msg2
 map fn view =
     { title = view.title
     , body = Element.map fn view.body
+    , next = view.next
+    , previous = view.previous
     }
 
 
@@ -49,6 +53,8 @@ none : View msg
 none =
     { title = ""
     , body = Element.none
+    , next = Nothing
+    , previous = Nothing
     }
 
 
@@ -63,4 +69,6 @@ fromString : String -> View msg
 fromString moduleName =
     { title = moduleName
     , body = Element.text moduleName
+    , next = Nothing
+    , previous = Nothing
     }
