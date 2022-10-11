@@ -31,6 +31,6 @@ page =
                         ]
                     ]
             ]
-    , next = Nothing
-    , previous = Just ""
+    , next = Just "/second"
+    , previous = Nothing
     }

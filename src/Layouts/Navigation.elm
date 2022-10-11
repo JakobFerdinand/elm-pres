@@ -64,6 +64,6 @@ overlay next previous =
             , alignTop
             , spacing 20
             ]
-            [ button next "<"
-            , button previous ">"
+            [ button previous "<"
+            , button next ">"
             ]
