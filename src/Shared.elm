@@ -52,44 +52,15 @@ init flagsResult route =
 -- UPDATE
 
 
-type Key
-    = Character Char
-    | Control String
-
-
 type Msg
-    = KeyPressed Key
+    = DoNothing
 
 
 update : Route () -> Msg -> Model -> ( Model, Effect Msg )
 update route msg model =
-    let
-        left m =
-            Debug.log "Links" m
-
-        right m =
-            Debug.log "Rechts" m
-    in
     case msg of
-        KeyPressed (Control "ArrowLeft") ->
-            ( left model
-            , Effect.none
-            )
-
-        KeyPressed (Control "ArrowRight") ->
-            ( right model
-            , Effect.none
-            )
-
-        KeyPressed (Character ' ') ->
-            ( right model
-            , Effect.none
-            )
-
-        KeyPressed _ ->
-            ( model
-            , Effect.none
-            )
+        DoNothing ->
+            ( model, Effect.none )
 
 
 
@@ -98,20 +69,4 @@ update route msg model =
 
 subscriptions : Route () -> Model -> Sub Msg
 subscriptions route model =
-    Browser.Events.onKeyDown keyDecoder
-
-
-keyDecoder : Json.Decode.Decoder Msg
-keyDecoder =
-    Json.Decode.map toKey (Json.Decode.field "key" Json.Decode.string)
-
-
-toKey : String -> Msg
-toKey string =
-    KeyPressed <|
-        case String.uncons string of
-            Just ( char, "" ) ->
-                Character char
-
-            _ ->
-                Control string
+    Sub.none
