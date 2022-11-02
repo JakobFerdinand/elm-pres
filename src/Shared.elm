@@ -63,9 +63,31 @@ type Msg
 
 update : Route () -> Msg -> Model -> ( Model, Effect Msg )
 update route msg model =
+    let
+        left m =
+            Debug.log "Links" m
+
+        right m =
+            Debug.log "Rechts" m
+    in
     case msg of
-        KeyPressed key ->
-            ( Debug.log (Debug.toString key) model
+        KeyPressed (Control "ArrowLeft") ->
+            ( left model
+            , Effect.none
+            )
+
+        KeyPressed (Control "ArrowRight") ->
+            ( right model
+            , Effect.none
+            )
+
+        KeyPressed (Character ' ') ->
+            ( right model
+            , Effect.none
+            )
+
+        KeyPressed _ ->
+            ( model
             , Effect.none
             )
 
