@@ -79,5 +79,5 @@ view _ =
                     ]
             ]
     , previous = Nothing
-    , next = Just NavigatePrevious
+    , next = Just NavigateNext
     }

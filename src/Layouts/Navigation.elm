@@ -21,8 +21,8 @@ layout { page } =
             , inFront <| overlay page.previous page.next
             ]
             page.body
-    , next = page.next
     , previous = page.previous
+    , next = page.next
     }
 
 
