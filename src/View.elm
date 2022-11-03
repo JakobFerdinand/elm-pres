@@ -14,14 +14,13 @@ module View exposing
 
 import Browser
 import Element exposing (Element, fill, height, layout, width)
-import Html
 
 
 type alias View msg =
     { title : String
     , body : Element msg
-    , next : Maybe String
-    , previous : Maybe String
+    , previous : Maybe msg
+    , next : Maybe msg
     }
 
 
@@ -41,8 +40,8 @@ map : (msg1 -> msg2) -> View msg1 -> View msg2
 map fn view =
     { title = view.title
     , body = Element.map fn view.body
-    , next = view.next
-    , previous = view.previous
+    , previous = view.previous |> Maybe.map fn
+    , next = view.next |> Maybe.map fn
     }
 
 

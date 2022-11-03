@@ -1,11 +1,13 @@
 module Pages.Home_ exposing (Model, Msg, layout, page)
 
+import Browser.Navigation as Nav
 import Element exposing (..)
 import Element.Font as Font
 import KeyListener
 import Layout exposing (Layout)
 import Logo
 import Page exposing (Page)
+import Route.Path as Path
 import View exposing (View)
 
 
@@ -14,9 +16,9 @@ type alias Model =
 
 
 type Msg
-    = LeftKeyPressed
-    | RightKeyPressed
-    | OtherKeyPressed
+    = NavigatePrevious
+    | NavigateNext
+    | DoNothing
 
 
 layout : Layout
@@ -42,23 +44,23 @@ init =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        LeftKeyPressed ->
+        NavigatePrevious ->
             ( model, Cmd.none )
 
-        RightKeyPressed ->
-            ( model, Cmd.none )
+        NavigateNext ->
+            ( model, Nav.load <| Path.toString Path.Second )
 
-        OtherKeyPressed ->
+        DoNothing ->
             ( model, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
-subscriptions model =
-    KeyListener.subscription LeftKeyPressed RightKeyPressed OtherKeyPressed
+subscriptions _ =
+    KeyListener.subscription NavigatePrevious NavigateNext DoNothing
 
 
 view : Model -> View Msg
-view model =
+view _ =
     { title = "Homepage"
     , body =
         Logo.elm
@@ -76,6 +78,6 @@ view model =
                         ]
                     ]
             ]
-    , next = Just "/second"
     , previous = Nothing
+    , next = Just NavigatePrevious
     }

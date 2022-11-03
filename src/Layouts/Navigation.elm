@@ -1,9 +1,10 @@
 module Layouts.Navigation exposing (layout)
 
-import Colors exposing (black, gray, lightgray)
+import Colors exposing (gray, lightgray)
 import Element exposing (..)
 import Element.Background as Background
 import Element.Border as Border
+import Element.Events as Events
 import Element.Font as Font
 import Html.Attributes as Attr
 import View exposing (View)
@@ -17,7 +18,7 @@ layout { page } =
             [ htmlAttribute <| Attr.class "page"
             , width fill
             , height fill
-            , inFront <| overlay page.next page.previous
+            , inFront <| overlay page.previous page.next
             ]
             page.body
     , next = page.next
@@ -25,26 +26,23 @@ layout { page } =
     }
 
 
-overlay : Maybe String -> Maybe String -> Element msg
-overlay next previous =
+overlay : Maybe msg -> Maybe msg -> Element msg
+overlay previous next =
     let
-        button : Maybe String -> String -> Element msg
+        button : Maybe msg -> String -> Element msg
         button nav t =
             case nav of
                 Just n ->
-                    link []
-                        { url = n
-                        , label =
-                            buttonContent
-                                [ Font.color black
-                                , padding 8
-                                , Border.rounded 5
-                                , mouseOver
-                                    [ Background.color lightgray
-                                    ]
-                                ]
-                                t
-                        }
+                    buttonContent
+                        [ mouseOver
+                            [ Background.color lightgray
+                            ]
+                        , Border.rounded 5
+                        , padding 8
+                        , pointer
+                        , Events.onClick n
+                        ]
+                        t
 
                 Nothing ->
                     buttonContent [ Font.color gray ] t
