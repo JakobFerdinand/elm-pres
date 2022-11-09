@@ -3,7 +3,6 @@ module Pages.Home_ exposing (Model, Msg, layout, page)
 import Browser.Navigation as Nav
 import Colors exposing (black)
 import Element exposing (..)
-import Element.Background as Background
 import Element.Font as Font
 import KeyListener
 import Layout exposing (Layout)
@@ -50,7 +49,7 @@ update msg model =
             ( model, Cmd.none )
 
         NavigateNext ->
-            ( model, Nav.load <| Path.toString Path.Second )
+            ( model, Nav.load <| Path.toString Path.Language )
 
         DoNothing ->
             ( model, Cmd.none )

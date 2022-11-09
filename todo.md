@@ -1,14 +1,12 @@
 # Things I want to talk about
 
-- What is Elm?
-    - Language
-    - Technology
-- What makes it different to Web Frameworks?
-- What makes it different to other languages?
+- Language 
+    - What makes it different to Web Frameworks?
+    - What makes it different to other languages?
 
-- Language
-    - Records
-    - Union Types
+- Compiler
+- Records
+- Union Types
 
 - MVU - The Elm Architecture
 
