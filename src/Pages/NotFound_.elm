@@ -1,5 +1,6 @@
 module Pages.NotFound_ exposing (page)
 
+import Colors exposing (lightgray)
 import Element exposing (..)
 import Element.Background as Background
 import Element.Border as Border
@@ -29,8 +30,10 @@ page =
             , link
                 [ centerX
                 , padding 8
-                , Background.color <| rgb255 92 105 224
                 , Border.rounded 5
+                , mouseOver
+                    [ Background.color lightgray
+                    ]
                 ]
                 { url = "/"
                 , label = text "Return Home"

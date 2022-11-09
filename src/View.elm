@@ -13,7 +13,10 @@ module View exposing
 -}
 
 import Browser
+import Colors exposing (darkgray, lightgray)
 import Element exposing (Element, fill, height, layout, width)
+import Element.Background as Background
+import Element.Font as Font
 
 
 type alias View msg =
@@ -30,7 +33,21 @@ so it works with Elm's expected `Browser.Document msg` type.
 toBrowserDocument : View msg -> Browser.Document msg
 toBrowserDocument view =
     { title = view.title
-    , body = [ layout [ width fill, height fill ] view.body ]
+    , body =
+        [ layout
+            [ width fill
+            , height fill
+            , Background.color darkgray
+            , Font.color lightgray
+            , Font.family
+                [ Font.external
+                    { name = "Source Sans 3"
+                    , url = "https://fonts.googleapis.com/css2?family=Source+Sans+3&display=swap"
+                    }
+                ]
+            ]
+            view.body
+        ]
     }
 
 

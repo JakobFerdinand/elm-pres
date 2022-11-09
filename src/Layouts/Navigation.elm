@@ -35,7 +35,7 @@ overlay previous next =
                 Just n ->
                     buttonContent
                         [ mouseOver
-                            [ Background.color lightgray
+                            [ Background.color gray
                             ]
                         , Border.rounded 5
                         , padding 8

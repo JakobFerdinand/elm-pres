@@ -1,7 +1,9 @@
 module Pages.Home_ exposing (Model, Msg, layout, page)
 
 import Browser.Navigation as Nav
+import Colors exposing (black)
 import Element exposing (..)
+import Element.Background as Background
 import Element.Font as Font
 import KeyListener
 import Layout exposing (Layout)
@@ -61,22 +63,22 @@ subscriptions _ =
 
 view : Model -> View Msg
 view _ =
-    { title = "Homepage"
+    { title = "ELM"
     , body =
-        Logo.elm
+        column
             [ centerX
             , centerY
-            , inFront <|
-                column
-                    [ centerX
-                    , centerY
-                    , spacing 30
+            , spacing 30
+            ]
+            [ Logo.elm
+                [ centerX
+                ]
+            , column [ centerX ]
+                [ el [ Font.size 36, centerX ] <| text "ELM"
+                , paragraph []
+                    [ text "If it compiles it works!"
                     ]
-                    [ el [ Font.size 36, centerX ] <| text "ELM"
-                    , paragraph []
-                        [ text "If it compiles it works!"
-                        ]
-                    ]
+                ]
             ]
     , previous = Nothing
     , next = Just NavigateNext
