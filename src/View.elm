@@ -2,6 +2,7 @@ module View exposing
     ( View, map
     , none, fromString
     , toBrowserDocument
+    , Slide(..)
     )
 
 {-|
@@ -14,17 +15,26 @@ module View exposing
 
 import Browser
 import Colors exposing (darkgray, lightgray)
-import Element exposing (Element, fill, height, layout, width)
+import Element exposing (..)
 import Element.Background as Background
 import Element.Font as Font
+import Html exposing (header)
 
 
 type alias View msg =
     { title : String
-    , body : Element msg
+    , body : Slide msg
     , previous : Maybe msg
     , next : Maybe msg
     }
+
+
+type Slide msg
+    = Header (Element msg)
+    | Slide
+        { header : Element msg
+        , body : Element msg
+        }
 
 
 {-| Used internally by Elm Land to create your application
@@ -37,6 +47,7 @@ toBrowserDocument view =
         [ layout
             [ width fill
             , height fill
+            , padding 80
             , Background.color darkgray
             , Font.color lightgray
             , Font.family
@@ -46,7 +57,20 @@ toBrowserDocument view =
                     }
                 ]
             ]
-            view.body
+          <|
+            case view.body of
+                Header header ->
+                    header
+
+                Slide { header, body } ->
+                    column
+                        [ spacing 50
+                        , width fill
+                        , height fill
+                        ]
+                        [ el [ Font.bold, Font.size 36 ] <| header
+                        , body
+                        ]
         ]
     }
 
@@ -56,7 +80,16 @@ toBrowserDocument view =
 map : (msg1 -> msg2) -> View msg1 -> View msg2
 map fn view =
     { title = view.title
-    , body = Element.map fn view.body
+    , body =
+        case view.body of
+            Header header ->
+                Header (Element.map fn header)
+
+            Slide { header, body } ->
+                Slide
+                    { header = Element.map fn header
+                    , body = Element.map fn body
+                    }
     , previous = view.previous |> Maybe.map fn
     , next = view.next |> Maybe.map fn
     }
@@ -68,7 +101,7 @@ authenticated pages.
 none : View msg
 none =
     { title = ""
-    , body = Element.none
+    , body = Header <| Element.none
     , next = Nothing
     , previous = Nothing
     }
@@ -84,7 +117,7 @@ the new page working in the web browser!
 fromString : String -> View msg
 fromString moduleName =
     { title = moduleName
-    , body = Element.text moduleName
+    , body = Header <| Element.text moduleName
     , next = Nothing
     , previous = Nothing
     }

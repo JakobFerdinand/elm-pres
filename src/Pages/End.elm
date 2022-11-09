@@ -9,7 +9,7 @@ import Page exposing (Page)
 import Route exposing (Route)
 import Route.Path as Path
 import Shared
-import View exposing (View)
+import View exposing (Slide(..), View)
 
 
 page : Shared.Model -> Route () -> Page Model Msg
@@ -89,13 +89,14 @@ view : Model -> View Msg
 view model =
     { title = "ELM"
     , body =
-        column
-            [ centerX
-            , centerY
-            , spacing 30
-            ]
-            [ text "Thank you!"
-            ]
+        Header <|
+            column
+                [ centerX
+                , centerY
+                , spacing 30
+                ]
+                [ text "Thank you!"
+                ]
     , previous = Just NavigatePrevious
     , next = Nothing
     }

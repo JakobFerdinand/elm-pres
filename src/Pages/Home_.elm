@@ -64,21 +64,22 @@ view : Model -> View Msg
 view _ =
     { title = "ELM"
     , body =
-        column
-            [ centerX
-            , centerY
-            , spacing 30
-            ]
-            [ Logo.elm
+        View.Header <|
+            column
                 [ centerX
+                , centerY
+                , spacing 30
                 ]
-            , column [ centerX ]
-                [ el [ Font.size 36, centerX ] <| text "ELM"
-                , paragraph []
-                    [ text "If it compiles it works!"
+                [ Logo.elm
+                    [ centerX
+                    ]
+                , column [ centerX ]
+                    [ el [ Font.size 36, centerX ] <| text "ELM"
+                    , paragraph []
+                        [ text "If it compiles it works!"
+                        ]
                     ]
                 ]
-            ]
     , previous = Nothing
     , next = Just NavigateNext
     }

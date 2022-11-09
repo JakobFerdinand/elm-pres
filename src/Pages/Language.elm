@@ -3,13 +3,14 @@ module Pages.Language exposing (Model, Msg, layout, page)
 import Browser.Navigation as Nav
 import Effect exposing (Effect)
 import Element exposing (..)
+import Element.Font as Font
 import KeyListener
 import Layout exposing (Layout)
 import Page exposing (Page)
 import Route exposing (Route)
 import Route.Path as Path
 import Shared
-import View exposing (View)
+import View exposing (Slide(..), View)
 
 
 page : Shared.Model -> Route () -> Page Model Msg
@@ -87,15 +88,15 @@ subscriptions model =
 
 view : Model -> View Msg
 view model =
-    { title = "ELM"
+    { title = "Elm Language"
     , body =
-        column
-            [ centerX
-            , centerY
-            , spacing 30
-            ]
-            [ text "Langugae - comparison to others like C#, JavaScript and Haskell"
-            ]
+        Slide
+            { header = text "Elm Language"
+            , body =
+                column
+                    [ spacing 20 ]
+                    [ text "comparison to others like C#, JavaScript and Haskell" ]
+            }
     , previous = Just NavigatePrevious
     , next = Just NavigateNext
     }
