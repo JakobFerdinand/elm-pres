@@ -91,7 +91,7 @@ view model =
     , body =
         Slide
             { header = text "Records"
-            , body = none
+            , body = text "Show a record and then an extensible record"
             }
     , previous = Just NavigatePrevious
     , next = Just NavigateNext
