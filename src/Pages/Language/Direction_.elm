@@ -1,4 +1,4 @@
-module Pages.Language exposing (Model, Msg, layout, page)
+module Pages.Language.Direction_ exposing (Model, Msg, layout, page)
 
 import Browser.Navigation as Nav
 import Chart as C
@@ -18,10 +18,10 @@ import Svg as S
 import View exposing (Slide(..), View)
 
 
-page : Shared.Model -> Route () -> Page Model Msg
+page : Shared.Model -> Route { direction : String } -> Page Model Msg
 page shared route =
     Page.new
-        { init = init
+        { init = init route.params.direction
         , update = update
         , subscriptions = subscriptions
         , view = view
@@ -42,9 +42,17 @@ type Model
     | ShowDiagram
 
 
-init : () -> ( Model, Effect Msg )
-init () =
-    ( Init
+init : String -> () -> ( Model, Effect Msg )
+init param () =
+    ( case param of
+        "backward" ->
+            ShowDiagram
+
+        "forward" ->
+            Init
+
+        _ ->
+            Init
     , Effect.none
     )
 
@@ -125,11 +133,12 @@ viewChart : Element msg
 viewChart =
     let
         data =
-            [ { usability = 20, staticTypeSystem = 20, language = "JavaScript" }
-            , { usability = 30, staticTypeSystem = 40, language = "TypeScript" }
-            , { usability = 80, staticTypeSystem = 75, language = "C#" }
-            , { usability = 50, staticTypeSystem = 98, language = "Haskell" }
-            , { usability = 98, staticTypeSystem = 98, language = "Elm" }
+            [ { maintainability = 20, useability = 85, language = "JavaScript" }
+            , { maintainability = 30, useability = 85, language = "Python" }
+            , { maintainability = 40, useability = 85, language = "TypeScript" }
+            , { maintainability = 75, useability = 75, language = "C#" }
+            , { maintainability = 90, useability = 40, language = "Haskell" }
+            , { maintainability = 90, useability = 90, language = "Elm" }
             ]
     in
     C.chart
@@ -139,8 +148,8 @@ viewChart =
         ]
         [ C.xAxis [ CA.color "#6bb6bb" ]
         , C.yAxis [ CA.color "#6bb6bb" ]
-        , C.series .staticTypeSystem
-            [ C.scatter .usability [ CA.opacity 0, CA.borderWidth 0 ]
+        , C.series .useability
+            [ C.scatter .maintainability [ CA.opacity 0, CA.borderWidth 0 ]
                 |> C.variation (\i d -> [ CA.size 150 ])
             ]
             data
@@ -154,12 +163,12 @@ viewChart =
         , C.labelAt .min
             CA.middle
             [ CA.moveLeft 5, CA.rotate 90 ]
-            [ S.text "Useability" ]
+            [ S.text "Maintainable" ]
         , C.labelAt
             CA.middle
             .min
             [ CA.moveDown 18 ]
-            [ S.text "Static Type System" ]
+            [ S.text "Useable" ]
         ]
         |> Element.html
         |> el

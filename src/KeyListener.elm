@@ -16,7 +16,9 @@ subscription onLeftKeyPressed onRightKeyPressed onAnyOtherKeyPressed =
 
 keyDecoder : msg -> msg -> msg -> Json.Decode.Decoder msg
 keyDecoder left right other =
-    Json.Decode.map (toKey left right other) (Json.Decode.field "key" Json.Decode.string)
+    Json.Decode.map
+        (toKey left right other)
+        (Json.Decode.field "key" Json.Decode.string)
 
 
 toKey : msg -> msg -> msg -> String -> msg
@@ -42,6 +44,9 @@ handle left right other key =
             left
 
         Control "ArrowRight" ->
+            right
+
+        Control "Enter" ->
             right
 
         Character ' ' ->

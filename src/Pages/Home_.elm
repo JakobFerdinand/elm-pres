@@ -49,7 +49,7 @@ update msg model =
             ( model, Cmd.none )
 
         NavigateNext ->
-            ( model, Nav.load <| Path.toString Path.Language )
+            ( model, Nav.load <| Path.toString (Path.Language__Direction_ { direction = "forward" }) )
 
         DoNothing ->
             ( model, Cmd.none )

@@ -63,7 +63,7 @@ update msg model =
     in
     case msg of
         NavigatePrevious ->
-            ( model, navigate Path.Language )
+            ( model, navigate (Path.Language__Direction_ { direction = "backward" }) )
 
         NavigateNext ->
             ( model, navigate Path.Records )
