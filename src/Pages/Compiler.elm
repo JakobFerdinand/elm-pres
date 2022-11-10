@@ -91,7 +91,14 @@ view model =
     , body =
         Slide
             { header = text "Elm Compiler"
-            , body = text "show nice error messages"
+            , body =
+                column [ height fill, width fill ]
+                    [ text "show nice error messages like this"
+                    , image [ width (fill |> maximum 1000) ]
+                        { src = "/elm-compiler-error.png"
+                        , description = "A helpful elm compiler error"
+                        }
+                    ]
             }
     , previous = Just NavigatePrevious
     , next = Just NavigateNext
