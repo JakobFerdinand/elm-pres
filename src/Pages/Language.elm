@@ -37,13 +37,14 @@ layout =
 -- INIT
 
 
-type alias Model =
-    {}
+type Model
+    = Init
+    | ShowDiagram
 
 
 init : () -> ( Model, Effect Msg )
 init () =
-    ( {}
+    ( Init
     , Effect.none
     )
 
@@ -67,14 +68,20 @@ update msg model =
                 |> Nav.load
                 |> Effect.fromCmd
     in
-    case msg of
-        NavigatePrevious ->
+    case ( msg, model ) of
+        ( NavigatePrevious, Init ) ->
             ( model, navigate Path.Home_ )
 
-        NavigateNext ->
+        ( NavigatePrevious, ShowDiagram ) ->
+            ( Init, Effect.none )
+
+        ( NavigateNext, Init ) ->
+            ( ShowDiagram, Effect.none )
+
+        ( NavigateNext, ShowDiagram ) ->
             ( model, navigate Path.Compiler )
 
-        DoNothing ->
+        ( DoNothing, _ ) ->
             ( model, Effect.none )
 
 
@@ -99,15 +106,15 @@ view model =
             { header = text "Elm Language"
             , body =
                 column
-                    [ spacing 20 ]
-                    [ text "comparison to others like C#, JavaScript and Haskell"
-                    , el
-                        [ width fill
-                        , height fill
-                        ]
-                      <|
-                        viewChart
-                    ]
+                    [ spacing 20, width fill, height fill ]
+                    (case model of
+                        Init ->
+                            [ text "comparison to others like C#, JavaScript and Haskell"
+                            ]
+
+                        ShowDiagram ->
+                            [ viewChart ]
+                    )
             }
     , previous = Just NavigatePrevious
     , next = Just NavigateNext
@@ -118,22 +125,22 @@ viewChart : Element msg
 viewChart =
     let
         data =
-            [ { usability = 20, staticTypeSystem = 20, language = "JavaScript#" }
-            , { usability = 30, staticTypeSystem = 40, language = "TypeScript#" }
+            [ { usability = 20, staticTypeSystem = 20, language = "JavaScript" }
+            , { usability = 30, staticTypeSystem = 40, language = "TypeScript" }
             , { usability = 80, staticTypeSystem = 75, language = "C#" }
             , { usability = 50, staticTypeSystem = 98, language = "Haskell" }
             , { usability = 98, staticTypeSystem = 98, language = "Elm" }
             ]
     in
     C.chart
-        [ CA.height 300
+        [ CA.height 200
         , CA.width 300
         , CA.padding { top = 0, bottom = 0, left = 30, right = 10 }
         ]
-        [ C.xLabels [ CA.color "white", CA.withGrid, CA.format (\_ -> "") ]
-        , C.yLabels [ CA.color "white", CA.withGrid, CA.format (\_ -> "") ]
+        [ C.xAxis [ CA.color "#6bb6bb" ]
+        , C.yAxis [ CA.color "#6bb6bb" ]
         , C.series .staticTypeSystem
-            [ C.scatter .usability [ CA.opacity 0.2, CA.borderWidth 1 ]
+            [ C.scatter .usability [ CA.opacity 0, CA.borderWidth 0 ]
                 |> C.variation (\i d -> [ CA.size 150 ])
             ]
             data
@@ -144,5 +151,20 @@ viewChart =
                     [ S.text (CI.getData dot).language ]
                     (CI.getCenter p dot)
                 ]
+        , C.labelAt .min
+            CA.middle
+            [ CA.moveLeft 5, CA.rotate 90 ]
+            [ S.text "Useability" ]
+        , C.labelAt
+            CA.middle
+            .min
+            [ CA.moveDown 18 ]
+            [ S.text "Static Type System" ]
         ]
         |> Element.html
+        |> el
+            [ width (fill |> maximum 800)
+            , height fill
+            , centerX
+            , centerY
+            ]
