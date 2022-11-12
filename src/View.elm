@@ -15,10 +15,10 @@ module View exposing
 
 import Browser
 import Colors exposing (darkgray, lightgray)
+import Component exposing (heading)
 import Element exposing (..)
 import Element.Background as Background
 import Element.Font as Font
-import Html exposing (header)
 
 
 type alias View msg =
@@ -68,7 +68,7 @@ toBrowserDocument view =
                         , width fill
                         , height fill
                         ]
-                        [ el [ Font.bold, Font.size 36 ] <| header
+                        [ heading header
                         , body
                         ]
         ]

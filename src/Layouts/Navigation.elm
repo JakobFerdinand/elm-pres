@@ -1,13 +1,13 @@
 module Layouts.Navigation exposing (layout)
 
 import Colors exposing (gray, lightgray)
+import Component exposing (button)
 import Element exposing (..)
 import Element.Background as Background
 import Element.Border as Border
 import Element.Events as Events
 import Element.Font as Font
 import Html.Attributes as Attr
-import List exposing (head)
 import View exposing (Slide(..), View)
 
 
@@ -45,29 +45,6 @@ layout { page } =
 
 overlay : Maybe msg -> Maybe msg -> Element msg
 overlay previous next =
-    let
-        button : Maybe msg -> String -> Element msg
-        button nav t =
-            case nav of
-                Just n ->
-                    buttonContent
-                        [ mouseOver
-                            [ Background.color gray
-                            ]
-                        , Border.rounded 5
-                        , padding 8
-                        , pointer
-                        , Events.onClick n
-                        ]
-                        t
-
-                Nothing ->
-                    buttonContent [ Font.color gray ] t
-
-        buttonContent : List (Attribute msg) -> String -> Element msg
-        buttonContent attr t =
-            el attr <| text t
-    in
     el
         [ alignRight
         , alignBottom
