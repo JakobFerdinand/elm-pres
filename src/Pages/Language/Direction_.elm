@@ -5,6 +5,7 @@ import Chart as C
 import Chart.Attributes as CA
 import Chart.Events as CE
 import Chart.Item as CI
+import Component exposing (code)
 import Effect exposing (Effect)
 import Element exposing (..)
 import Element.Font as Font
@@ -117,7 +118,12 @@ view model =
                     [ spacing 20, width fill, height fill ]
                     (case model of
                         Init ->
-                            [ text "comparison to others like C#, JavaScript and Haskell"
+                            [ column [ padding 10, spacing 10 ]
+                                [ text "Functional"
+                                , code [] "sum a b =\n    a + b"
+                                ]
+                            , text "- Pure -> No side effects"
+                            , text "- Relativly easy"
                             ]
 
                         ShowDiagram ->

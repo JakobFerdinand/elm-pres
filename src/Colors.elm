@@ -1,8 +1,11 @@
 module Colors exposing
     ( black
+    , blue
     , darkgray
     , gray
+    , green
     , lightgray
+    , orange
     , white
     )
 
@@ -32,3 +35,18 @@ darkgray =
 black : Color
 black =
     rgb 0 0 0
+
+
+blue : Color
+blue =
+    rgb255 96 181 204
+
+
+green : Color
+green =
+    rgb255 112 173 0
+
+
+orange : Color
+orange =
+    rgb255 240 172 0

@@ -1,6 +1,7 @@
 module Pages.Compiler exposing (Model, Msg, layout, page)
 
 import Browser.Navigation as Nav
+import Component exposing (code)
 import Effect exposing (Effect)
 import Element exposing (..)
 import KeyListener
@@ -31,13 +32,14 @@ layout =
 -- INIT
 
 
-type alias Model =
-    {}
+type Model
+    = Sample1
+    | Sample2
 
 
 init : () -> ( Model, Effect Msg )
 init () =
-    ( {}
+    ( Sample1
     , Effect.none
     )
 
@@ -61,14 +63,20 @@ update msg model =
                 |> Nav.load
                 |> Effect.fromCmd
     in
-    case msg of
-        NavigatePrevious ->
+    case ( msg, model ) of
+        ( NavigatePrevious, Sample1 ) ->
             ( model, navigate (Path.Language__Direction_ { direction = "backward" }) )
 
-        NavigateNext ->
+        ( NavigatePrevious, Sample2 ) ->
+            ( Sample1, Effect.none )
+
+        ( NavigateNext, Sample1 ) ->
+            ( Sample2, Effect.none )
+
+        ( NavigateNext, Sample2 ) ->
             ( model, navigate Path.Records )
 
-        DoNothing ->
+        ( DoNothing, _ ) ->
             ( model, Effect.none )
 
 
@@ -93,13 +101,37 @@ view model =
             { header = text "Elm Compiler"
             , body =
                 column [ height fill, width fill ]
-                    [ text "show nice error messages like this"
-                    , image [ width (fill |> maximum 1000) ]
-                        { src = "/elm-compiler-error.png"
-                        , description = "A helpful elm compiler error"
-                        }
+                    [ case model of
+                        Sample1 ->
+                            viewSample1
+
+                        Sample2 ->
+                            viewSample2
                     ]
             }
     , previous = Just NavigatePrevious
     , next = Just NavigateNext
     }
+
+
+viewSample1 : Element msg
+viewSample1 =
+    row [ spacing 20 ]
+        [ code [ centerY ] "\nviewUsersName users =\n    users\n        |> List.nap viewUser\n\n\nviewUser user =\n    row\n        [ spacing 5 ]\n        [ viewSmallUserIcon user\n        , text user.name\n        ]\n"
+        , image [ width fill ]
+            { src = "/list-map-error.png"
+            , description = ""
+            }
+        ]
+
+
+viewSample2 : Element msg
+viewSample2 =
+    row [ spacing 20 ]
+        [ code [ centerY ]
+            "gertraud =\n    { firstName = \"Gertraud\"\n    , lastName = \"Steiner\"\n    }\n\n\nisOver18 person =\n    person.age > 18\n\n\ncheckAge =\n    isOver18 gertraud"
+        , image [ width fill ]
+            { src = "/missing-field-error.png"
+            , description = ""
+            }
+        ]
