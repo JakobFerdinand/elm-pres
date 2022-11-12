@@ -1,8 +1,13 @@
 module Pages.Architecture exposing (Model, Msg, layout, page)
 
 import Browser.Navigation as Nav
+import Colors exposing (blue, lightgray)
+import Component exposing (code)
 import Effect exposing (Effect)
 import Element exposing (..)
+import Element.Background as Background
+import Element.Border as Border
+import Element.Font as Font
 import KeyListener
 import Layout exposing (Layout)
 import Page exposing (Page)
@@ -31,13 +36,14 @@ layout =
 -- INIT
 
 
-type alias Model =
-    {}
+type Model
+    = Init
+    | WithCode
 
 
 init : () -> ( Model, Effect Msg )
 init () =
-    ( {}
+    ( Init
     , Effect.none
     )
 
@@ -61,14 +67,20 @@ update msg model =
                 |> Nav.load
                 |> Effect.fromCmd
     in
-    case msg of
-        NavigatePrevious ->
+    case ( msg, model ) of
+        ( NavigatePrevious, Init ) ->
             ( model, navigate Path.Unions )
 
-        NavigateNext ->
+        ( NavigatePrevious, WithCode ) ->
+            ( Init, Effect.none )
+
+        ( NavigateNext, Init ) ->
+            ( WithCode, Effect.none )
+
+        ( NavigateNext, WithCode ) ->
             ( model, navigate Path.Resouces )
 
-        DoNothing ->
+        ( DoNothing, _ ) ->
             ( model, Effect.none )
 
 
@@ -91,8 +103,55 @@ view model =
     , body =
         Slide
             { header = text "Elm Architecture"
-            , body = text "Explain MVU"
+            , body =
+                case model of
+                    Init ->
+                        showDiagram
+
+                    WithCode ->
+                        showWithCode
             }
     , previous = Just NavigatePrevious
     , next = Just NavigateNext
     }
+
+
+showDiagram : Element msg
+showDiagram =
+    column [ width fill, height fill, spacing 5 ]
+        [ image
+            [ width (fill |> maximum 800)
+            , Background.color lightgray
+            , Border.rounded 5
+            , centerX
+            ]
+            { src = "/diagram-tea.png"
+            , description = "The Elm Architecture"
+            }
+        , newTabLink
+            [ centerX
+            , Font.size 10
+            , Font.color blue
+            ]
+            { url = "https://sporto.github.io/elm-workshop/03-tea/01-intro.html"
+            , label = text "Image from sportio"
+            }
+        ]
+
+
+showWithCode : Element msg
+showWithCode =
+    row [ spacing 20, width fill ]
+        [ showDiagram
+        , column [ spacing 5 ]
+            [ code [ centerY ]
+                "type alias Model =\n    { count : Int }\n\n\ninit : () -> (Model, Cmd Msg)\ninit () =\n    ( { count = 0 }\n    , Cmd.none\n    )\n\n\ntype Msg\n    = Increment\n    | Decrement\n\n\nupdate : Msg -> Model -> ( Model, Cmd Msg )\nupdate msg model =\n    case msg of\n        Increment ->\n            ( { model | count = model.count + 1 }\n            , Cmd.none\n            )\n\n        Decrement ->\n            ( { model | count = model.count - 1 }\n            , Cmd.none\n            )\n\n\nview : Model -> Html Msg\nview model =\n    div []\n        [ button [ onClick Increment ] [ text \"+1\" ]\n        , div [] [ text <| String.fromInt model.count ]\n        , button [ onClick Decrement ] [ text \"-1\" ]\n        ]"
+            , newTabLink
+                [ centerX
+                , Font.color blue
+                ]
+                { url = "https://ellie-app.com/k8pLSb2z53Za1"
+                , label = text "Execute me in Ellie"
+                }
+            ]
+        ]
