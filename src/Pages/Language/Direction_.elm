@@ -151,6 +151,14 @@ viewChart =
         [ CA.height 200
         , CA.width 300
         , CA.padding { top = 0, bottom = 0, left = 30, right = 10 }
+        , CA.range
+          [ CA.lowest 0 CA.orLower
+          , CA.highest 100 CA.orHigher
+          ]
+        , CA.domain
+          [ CA.lowest 0 CA.orLower
+          , CA.highest 100 CA.orHigher
+          ]
         ]
         [ C.xAxis [ CA.color "#6bb6bb" ]
         , C.yAxis [ CA.color "#6bb6bb" ]
