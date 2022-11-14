@@ -1,4 +1,5 @@
-module Component exposing (button, code, heading, subHeading)
+module Component exposing (button, code, heading, subHeading,
+    imageLink)
 
 import Colors exposing (..)
 import Element exposing (..)
@@ -72,3 +73,33 @@ heading =
 subHeading : Element msg -> Element msg
 subHeading =
     el [ Font.bold, Font.size 24 ]
+
+-- Links
+
+imageLink :
+    { url : String
+    , images :
+        List
+            { imageUrl : String
+            , imageDescription : String
+            }
+    , description : String
+    }
+    -> Element msg
+imageLink { url, images, description } =
+    newTabLink []
+        { url = url
+        , label =
+            column [ width fill, spacing 5 ]
+                [ row [ width (fill |> maximum 250), spacing 5 ]
+                    (images |> List.map viewImage)
+                , el [ centerX ] <| text description
+                ]
+        }
+
+viewImage : { imageUrl : String, imageDescription : String } -> Element msg
+viewImage { imageUrl, imageDescription } =
+    image [ width (fill |> maximum 250) ]
+        { src = imageUrl
+        , description = imageDescription
+        }

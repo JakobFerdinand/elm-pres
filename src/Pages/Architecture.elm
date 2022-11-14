@@ -10,6 +10,7 @@ import Element.Border as Border
 import Element.Font as Font
 import KeyListener
 import Layout exposing (Layout)
+import Navigation exposing (navigate)
 import Page exposing (Page)
 import Route exposing (Route)
 import Route.Path as Path
@@ -60,13 +61,6 @@ type Msg
 
 update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
-    let
-        navigate to =
-            to
-                |> Path.toString
-                |> Nav.load
-                |> Effect.fromCmd
-    in
     case ( msg, model ) of
         ( NavigatePrevious, Init ) ->
             ( model, navigate Path.Unions )

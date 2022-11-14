@@ -6,6 +6,7 @@ import Effect exposing (Effect)
 import Element exposing (..)
 import KeyListener
 import Layout exposing (Layout)
+import Navigation exposing (navigate)
 import Page exposing (Page)
 import Route exposing (Route)
 import Route.Path as Path
@@ -56,13 +57,6 @@ type Msg
 
 update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
-    let
-        navigate to =
-            to
-                |> Path.toString
-                |> Nav.load
-                |> Effect.fromCmd
-    in
     case ( msg, model ) of
         ( NavigatePrevious, Sample1 ) ->
             ( model, navigate (Path.Language__Direction_ { direction = "backward" }) )

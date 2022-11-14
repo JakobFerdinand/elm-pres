@@ -1,12 +1,13 @@
 module Pages.Resouces exposing (Model, Msg, layout, page)
 
 import Browser.Navigation as Nav
+import Component exposing (imageLink)
 import Effect exposing (Effect)
 import Element exposing (..)
-import Element.Region exposing (description)
 import KeyListener
 import Layout exposing (Layout)
 import Logo
+import Navigation exposing (navigate)
 import Page exposing (Page)
 import Route exposing (Route)
 import Route.Path as Path
@@ -56,19 +57,12 @@ type Msg
 
 update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
-    let
-        navigate to =
-            to
-                |> Path.toString
-                |> Nav.load
-                |> Effect.fromCmd
-    in
     case msg of
         NavigatePrevious ->
             ( model, navigate Path.Architecture )
 
         NavigateNext ->
-            ( model, navigate Path.End )
+            ( model, navigate Path.Frameworks )
 
         DoNothing ->
             ( model, Effect.none )
@@ -93,8 +87,7 @@ view model =
     , body =
         Slide
             { header = text "Resources"
-            , body =
-                viewLinks
+            , body = viewLinks
             }
     , previous = Just NavigatePrevious
     , next = Just NavigateNext
@@ -103,35 +96,6 @@ view model =
 
 viewLinks : Element msg
 viewLinks =
-    let
-        viewResource :
-            { url : String
-            , images :
-                List
-                    { imageUrl : String
-                    , imageDescription : String
-                    }
-            , description : String
-            }
-            -> Element msg
-        viewResource { url, images, description } =
-            newTabLink []
-                { url = url
-                , label =
-                    column [ width fill, spacing 5 ]
-                        [ row [ width (fill |> maximum 250), spacing 5 ]
-                            (images |> List.map viewImage)
-                        , el [ centerX ] <| text description
-                        ]
-                }
-
-        viewImage : { imageUrl : String, imageDescription : String } -> Element msg
-        viewImage { imageUrl, imageDescription } =
-            image [ width (fill |> maximum 250) ]
-                { src = imageUrl
-                , description = imageDescription
-                }
-    in
     column [ width fill, height fill, spacing 50 ]
         [ row [ width fill, spaceEvenly ]
             [ newTabLink []
@@ -142,36 +106,7 @@ viewLinks =
                         , el [ centerX ] <| text "Elm Lang"
                         ]
                 }
-            , viewResource
-                { url = "https://elmcraft.org/"
-                , images =
-                    [ { imageUrl = "/elmcraft-logo.png"
-                      , imageDescription = "elmcraft logo"
-                      }
-                    ]
-                , description = "Things built with elm: elmcraft.org"
-                }
-            , viewResource
-                { url = "https://elm-radio.com/"
-                , images =
-                    [ { imageUrl = "/elm-radio-logo.svg"
-                      , imageDescription = "elm-radio logo"
-                      }
-                    ]
-                , description = "Podcast: elm-radio"
-                }
-            ]
-        , row [ width fill, spaceEvenly ]
-            [ viewResource
-                { url = "https://elmprogramming.com/"
-                , images =
-                    [ { imageUrl = "elmprogramming-logo.png"
-                      , imageDescription = "elmprogramming logo"
-                      }
-                    ]
-                , description = "Tutorial: elmprogramming.com"
-                }
-            , viewResource
+            , imageLink
                 { url = "https://elm-lang.org/community"
                 , images =
                     [ { imageUrl = "slack-logo.svg"
@@ -183,7 +118,45 @@ viewLinks =
                     ]
                 , description = "Community"
                 }
-            , viewResource
+            , imageLink
+                { url = "https://elm-radio.com/"
+                , images =
+                    [ { imageUrl = "/elm-radio-logo.svg"
+                      , imageDescription = "elm-radio logo"
+                      }
+                    ]
+                , description = "Podcast: elm-radio"
+                }
+            ]
+        , row [ width fill, spaceEvenly ]
+            [ imageLink
+                { url = "https://elmprogramming.com/"
+                , images =
+                    [ { imageUrl = "elmprogramming-logo.png"
+                      , imageDescription = "elmprogramming logo"
+                      }
+                    ]
+                , description = "Tutorial: elmprogramming.com"
+                }
+            , imageLink
+                { url = "https://orasund.gitbook.io/elm-cookbook/"
+                , images =
+                    [ { imageUrl = "/elm-cookbook-logo.png"
+                      , imageDescription = "elm-cookbook logo"
+                      }
+                    ]
+                , description = "elm-cookbook"
+                }
+            , imageLink
+                { url = "https://elmcraft.org/"
+                , images =
+                    [ { imageUrl = "/elmcraft-logo.png"
+                      , imageDescription = "elmcraft logo"
+                      }
+                    ]
+                , description = "Things built with elm"
+                }
+            , imageLink
                 { url = "https://exercism.org/tracks/elm"
                 , images =
                     [ { imageUrl = "/exercism-logo.svg"

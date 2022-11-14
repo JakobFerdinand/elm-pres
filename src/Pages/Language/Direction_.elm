@@ -11,6 +11,7 @@ import Element exposing (..)
 import Element.Font as Font
 import KeyListener
 import Layout exposing (Layout)
+import Navigation exposing (navigate)
 import Page exposing (Page)
 import Route exposing (Route)
 import Route.Path as Path
@@ -70,13 +71,6 @@ type Msg
 
 update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
-    let
-        navigate to =
-            to
-                |> Path.toString
-                |> Nav.load
-                |> Effect.fromCmd
-    in
     case ( msg, model ) of
         ( NavigatePrevious, Init ) ->
             ( model, navigate Path.Home_ )
@@ -152,13 +146,13 @@ viewChart =
         , CA.width 300
         , CA.padding { top = 0, bottom = 0, left = 30, right = 10 }
         , CA.range
-          [ CA.lowest 0 CA.orLower
-          , CA.highest 100 CA.orHigher
-          ]
+            [ CA.lowest 0 CA.orLower
+            , CA.highest 100 CA.orHigher
+            ]
         , CA.domain
-          [ CA.lowest 0 CA.orLower
-          , CA.highest 100 CA.orHigher
-          ]
+            [ CA.lowest 0 CA.orLower
+            , CA.highest 100 CA.orHigher
+            ]
         ]
         [ C.xAxis [ CA.color "#6bb6bb" ]
         , C.yAxis [ CA.color "#6bb6bb" ]
