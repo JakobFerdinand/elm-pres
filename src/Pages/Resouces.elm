@@ -102,7 +102,7 @@ viewLinks =
                 { url = "https://elm-lang.org/"
                 , label =
                     column [ width fill, spacing 5 ]
-                        [ Logo.elm []
+                        [ Logo.static []
                         , el [ centerX ] <| text "Elm Lang"
                         ]
                 }

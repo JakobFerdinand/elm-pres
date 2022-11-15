@@ -1,5 +1,10 @@
-module Component exposing (button, code, heading, subHeading,
-    imageLink)
+module Component exposing
+    ( button
+    , code
+    , heading
+    , imageLink
+    , subHeading
+    )
 
 import Colors exposing (..)
 import Element exposing (..)
@@ -74,7 +79,10 @@ subHeading : Element msg -> Element msg
 subHeading =
     el [ Font.bold, Font.size 24 ]
 
+
+
 -- Links
+
 
 imageLink :
     { url : String
@@ -96,6 +104,7 @@ imageLink { url, images, description } =
                 , el [ centerX ] <| text description
                 ]
         }
+
 
 viewImage : { imageUrl : String, imageDescription : String } -> Element msg
 viewImage { imageUrl, imageDescription } =

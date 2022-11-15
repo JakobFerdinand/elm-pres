@@ -73,7 +73,7 @@ update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
     case ( msg, model ) of
         ( NavigatePrevious, Init ) ->
-            ( model, navigate Path.Home_ )
+            ( model, navigate Path.NoRuntimeExceptions )
 
         ( NavigatePrevious, ShowDiagram ) ->
             ( Init, Effect.none )
@@ -146,11 +146,11 @@ viewChart =
         , CA.width 300
         , CA.padding { top = 0, bottom = 0, left = 30, right = 10 }
         , CA.range
-            [ CA.lowest 0 CA.orLower
+            [ CA.lowest 10 CA.orLower
             , CA.highest 100 CA.orHigher
             ]
         , CA.domain
-            [ CA.lowest 0 CA.orLower
+            [ CA.lowest 10 CA.orLower
             , CA.highest 100 CA.orHigher
             ]
         ]
