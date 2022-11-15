@@ -25,7 +25,7 @@ import Element exposing (el, html)
 import Html
 import Html.Attributes as HtmlAtt
 import Svg exposing (Svg, g, polygon, svg)
-import Svg.Attributes exposing (d, fill, height, points, transform, viewBox)
+import Svg.Attributes exposing (d, fill, points, transform, viewBox)
 
 
 static : List (Element.Attribute msg) -> Element.Element msg
@@ -78,10 +78,10 @@ start =
 -- VIEW
 
 
-view : List (Html.Attribute msg) -> Model -> Html.Html msg
-view attrs model =
+view : String -> List (Html.Attribute msg) -> Model -> Html.Html msg
+view viewbox attrs model =
     svg
-        (viewBox "-600 -600 1200 1200" :: attrs)
+        (viewBox viewbox :: attrs)
         [ g
             [ transform "scale(1 -1)"
             ]
@@ -123,6 +123,7 @@ viewShapeHelp color x y a coordinates =
         []
 
 
+triangleBig : String
 triangleBig =
     "-280,-90 0,190 280,-90"
 
@@ -131,6 +132,7 @@ triangleBig =
 --    /\    -- 396x396x560
 
 
+triangleMedium : String
 triangleMedium =
     "-198,-66 0,132 198,-66"
 
@@ -139,6 +141,7 @@ triangleMedium =
 --   /  \   -- 280x280x396
 
 
+triangleSmall : String
 triangleSmall =
     "-130,-44 0,86  130,-44"
 
@@ -147,6 +150,7 @@ triangleSmall =
 --  /____\  -- 184x184260
 
 
+square : String
 square =
     "-130,0 0,-130 130,0 0,130"
 
@@ -155,6 +159,7 @@ square =
 -- 184x184
 
 
+parallelogram : String
 parallelogram =
     "-191,61 69,61 191,-61 -69,-61"
 

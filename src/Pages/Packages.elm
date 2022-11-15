@@ -1,4 +1,4 @@
-module Pages.Frameworks exposing (Model, Msg, page)
+module Pages.Packages exposing (Model, Msg, page)
 
 import Colors exposing (..)
 import Component exposing (imageLink)
@@ -84,10 +84,10 @@ subscriptions _ =
 
 view : Model -> View Msg
 view model =
-    { title = "My favourite frameworks"
+    { title = "My favourite packages"
     , body =
         Slide
-            { header = text "My favourite frameworks"
+            { header = text "My favourite packages"
             , body = viewLinks
             }
     , previous = Just NavigatePrevious
@@ -101,11 +101,11 @@ viewLinks =
         frameworkLink { url, logo, description } =
             newTabLink
                 [ height (px 250)
-                , width (px 250)
+                , width (px 370)
                 , Border.color lightgray
                 , Border.rounded 10
                 , Border.width 2
-                , padding 5
+                , padding 8
                 ]
                 { url = url
                 , label =
@@ -136,7 +136,7 @@ viewLinks =
                 , description = "prerender everything"
                 }
             ]
-        , row [ width fill, spacing 100 ]
+        , row [ centerX, spacing 100 ]
             [ imageLink
                 { url = "https://elm.land/"
                 , images =
@@ -153,7 +153,7 @@ viewLinks =
                       , imageDescription = "lamdera logao"
                       }
                     ]
-                , description = "full-stack web apps: Lamdera"
+                , description = "full-stack web apps"
                 }
             ]
         ]

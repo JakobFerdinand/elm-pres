@@ -1,12 +1,7 @@
 module Layouts.Navigation exposing (layout)
 
-import Colors exposing (gray, lightgray)
 import Component exposing (button)
 import Element exposing (..)
-import Element.Background as Background
-import Element.Border as Border
-import Element.Events as Events
-import Element.Font as Font
 import Html.Attributes as Attr
 import View exposing (Slide(..), View)
 
@@ -35,6 +30,8 @@ layout { page } =
                             , width fill
                             , height fill
                             , inFront <| overlay page.previous page.next
+                            , scrollbarY
+                            , padding 5
                             ]
                             body
                     }

@@ -1,9 +1,9 @@
 module Pages.Records exposing (Model, Msg, layout, page)
 
-import Browser.Navigation as Nav
 import Component exposing (code, subHeading)
 import Effect exposing (Effect)
 import Element exposing (..)
+import Element.Font as Font
 import KeyListener
 import Layout exposing (Layout)
 import Navigation exposing (navigate)
@@ -59,7 +59,7 @@ update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
     case ( msg, model ) of
         ( NavigatePrevious, Record ) ->
-            ( model, navigate Path.Compiler )
+            ( model, navigate Path.NoRuntimeExceptions )
 
         ( NavigatePrevious, ExtensibleRecord ) ->
             ( Record, Effect.none )
@@ -108,7 +108,7 @@ view model =
 
 viewRecord : Element msg
 viewRecord =
-    column [ width fill, spacing 20 ]
+    column [ width fill, spacing 20, Font.size 24 ]
         [ subHeading <| text "Type alias"
         , row
             [ width fill, spacing 20, alignTop ]
@@ -120,7 +120,7 @@ viewRecord =
 
 viewExtensibleRecord : Element msg
 viewExtensibleRecord =
-    column [ width fill, spacing 20 ]
+    column [ width fill, spacing 20, Font.size 24 ]
         [ subHeading <| text "Extensible records"
         , code [] "isOver18Years : { a | age : Int } -> Bool\nisOver18Years thing =\n    thing.age > 18\n\n\ngertraud : Person\ngertraud =\n    { firstName = \"Gertraud\"\n    , lastName = \"Steiner\"\n    , age = 58\n    }\n\n\ntableSaw : Tool\ntableSaw =\n    { power = 3.2\n    , manufacturer = \"Record Power\"\n    , age = 33\n    }\n\n\nbothOldEnough =\n    isOver18Years gertraud && isOver18Years tableSaw\n    "
         ]

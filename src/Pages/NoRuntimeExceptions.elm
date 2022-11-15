@@ -1,10 +1,9 @@
-module Pages.NoRuntimeExceptions exposing (Model, Msg, page)
+module Pages.NoRuntimeExceptions exposing (Model, Msg, layout, page)
 
 import Colors exposing (blue)
 import Effect exposing (Effect)
 import Element exposing (..)
 import Element.Font as Font
-import Html
 import KeyListener
 import Layout exposing (Layout)
 import Navigation exposing (navigate)
@@ -59,10 +58,10 @@ update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
     case msg of
         NavigatePrevious ->
-            ( model, navigate Path.Overview )
+            ( model, navigate Path.Compiler )
 
         NavigateNext ->
-            ( model, navigate (Path.Language__Direction_ { direction = "forward" }) )
+            ( model, navigate Path.Records )
 
         DoNothing ->
             ( model, Effect.none )
@@ -102,7 +101,10 @@ view model =
                             { src = "/production-runtime-exeptions-2015-2020.png"
                             , description = "Diagram of runtime exceptions in JavaScript and Elm from 2015 to 2020 at company NoRedInk."
                             }
-                        , el [ alignBottom ] <| text "Not zero\nbut negligible"
+                        , column [ alignBottom, spacing 10 ]
+                            [ text "Not zero\nbut negligible"
+                            , text "2015-2020"
+                            ]
                         ]
                     , newTabLink
                         [ centerX

@@ -57,7 +57,7 @@ update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
     case msg of
         NavigatePrevious ->
-            ( model, navigate Path.Frameworks )
+            ( model, navigate Path.Packages )
 
         NavigateNext ->
             ( model, Effect.none )

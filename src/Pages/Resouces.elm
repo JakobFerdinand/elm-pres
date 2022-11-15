@@ -62,7 +62,7 @@ update msg model =
             ( model, navigate Path.Architecture )
 
         NavigateNext ->
-            ( model, navigate Path.Frameworks )
+            ( model, navigate Path.Packages )
 
         DoNothing ->
             ( model, Effect.none )

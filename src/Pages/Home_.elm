@@ -146,9 +146,16 @@ view model =
                 [ centerX
                 , centerY
                 ]
-                [ el [ width (px 500), height (px 500) ] <| tangram model
+                [ el
+                    [ width (px 500)
+                    , height (px 500)
+                    , scale 1.3
+                    , moveUp 50
+                    ]
+                  <|
+                    tangram model
                 , column [ centerX ]
-                    [ el [ Font.size 36, centerX ] <| text "ELM"
+                    [ el [ Font.size 44, centerX ] <| text "ELM"
                     , paragraph []
                         [ text "If it compiles it works!"
                         ]
@@ -167,6 +174,7 @@ tangram : Model -> Element Msg
 tangram model =
     html <|
         Logo.view
+            "-600 -600 1200 1200"
             [ style "max-height" "500px"
             , style "max-width" "500px"
             , onMouseMove

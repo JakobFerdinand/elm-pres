@@ -47,7 +47,7 @@ toBrowserDocument view =
         [ layout
             [ width fill
             , height fill
-            , padding 80
+            , padding 60
             , Background.color darkgray
             , Font.color lightgray
             , Font.family
@@ -56,6 +56,8 @@ toBrowserDocument view =
                     , url = "https://fonts.googleapis.com/css2?family=Source+Sans+3&display=swap"
                     }
                 ]
+            , Font.size 36
+            , scrollbarY
             ]
           <|
             case view.body of
@@ -67,6 +69,7 @@ toBrowserDocument view =
                         [ spacing 50
                         , width fill
                         , height fill
+                        , scrollbarY
                         ]
                         [ heading header
                         , body

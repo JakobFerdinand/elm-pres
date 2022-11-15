@@ -68,7 +68,7 @@ update msg model =
             ( Sample2, Effect.none )
 
         ( NavigateNext, Sample2 ) ->
-            ( model, navigate Path.Records )
+            ( model, navigate Path.NoRuntimeExceptions )
 
         ( DoNothing, _ ) ->
             ( model, Effect.none )

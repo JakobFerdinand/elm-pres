@@ -2,13 +2,15 @@ module Pages.Overview exposing (Model, Msg, layout, page)
 
 import Effect exposing (Effect)
 import Element exposing (..)
-import Html
+import Element.Font as Font
+import Html.Attributes exposing (style)
 import KeyListener
 import Layout exposing (Layout)
+import Logo
 import Navigation exposing (navigate)
 import Page exposing (Page)
 import Route exposing (Route)
-import Route.Path as Path
+import Route.Path as Path exposing (Path(..))
 import Shared
 import View exposing (Slide(..), View)
 
@@ -32,13 +34,14 @@ layout =
 -- INIT
 
 
-type alias Model =
-    {}
+type Model
+    = Init
+    | WebFrameworks
 
 
 init : () -> ( Model, Effect Msg )
 init () =
-    ( {}
+    ( Init
     , Effect.none
     )
 
@@ -55,14 +58,20 @@ type Msg
 
 update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
-    case msg of
-        NavigatePrevious ->
+    case ( msg, model ) of
+        ( NavigatePrevious, Init ) ->
             ( model, navigate Path.Home_ )
 
-        NavigateNext ->
-            ( model, navigate Path.NoRuntimeExceptions )
+        ( NavigatePrevious, WebFrameworks ) ->
+            ( Init, Effect.none )
 
-        DoNothing ->
+        ( NavigateNext, Init ) ->
+            ( WebFrameworks, Effect.none )
+
+        ( NavigateNext, WebFrameworks ) ->
+            ( model, navigate (Path.Language__Direction_ { direction = "forward" }) )
+
+        ( DoNothing, _ ) ->
             ( model, Effect.none )
 
 
@@ -84,9 +93,49 @@ view model =
     { title = "ELM"
     , body =
         Slide
-            { header = text "Overview"
-            , body = none
+            { header = text "elm"
+            , body =
+                column [ spacing 20 ]
+                    [ row [ moveLeft 25 ]
+                        [ tangram
+                        , el [ Font.size 44 ] <| text "A delightful language\nfor reliable webapps."
+                        ]
+                    , case model of
+                        Init ->
+                            viewOverview
+
+                        WebFrameworks ->
+                            viewFrameworks
+                    ]
             }
     , previous = Just NavigatePrevious
     , next = Just NavigateNext
     }
+
+
+tangram : Element msg
+tangram =
+    Logo.view
+        "-350 -350 700 700"
+        [ style "max-height" "500px"
+        , style "max-width" "500px"
+        ]
+        Logo.start
+        |> html
+        |> el [ width (px 400), height (px 400) ]
+
+
+viewOverview : Element msg
+viewOverview =
+    column []
+        [ text "fast and friedly compiler"
+        , text "small and simple"
+        , text "JavaScript interop"
+        ]
+
+
+viewFrameworks : Element msg
+viewFrameworks =
+    column []
+        [ text "Not really compareable to WebFrameworks like Angular, React, Vue"
+        ]

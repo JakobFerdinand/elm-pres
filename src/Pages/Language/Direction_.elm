@@ -1,10 +1,9 @@
 module Pages.Language.Direction_ exposing (Model, Msg, layout, page)
 
-import Browser.Navigation as Nav
 import Chart as C
 import Chart.Attributes as CA
-import Chart.Events as CE
 import Chart.Item as CI
+import Colors exposing (blue)
 import Component exposing (code)
 import Effect exposing (Effect)
 import Element exposing (..)
@@ -73,7 +72,7 @@ update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
     case ( msg, model ) of
         ( NavigatePrevious, Init ) ->
-            ( model, navigate Path.NoRuntimeExceptions )
+            ( model, navigate Path.Overview )
 
         ( NavigatePrevious, ShowDiagram ) ->
             ( Init, Effect.none )
@@ -109,15 +108,34 @@ view model =
             { header = text "Elm Language"
             , body =
                 column
-                    [ spacing 20, width fill, height fill ]
+                    [ spacing 20
+                    , width fill
+                    , height fill
+                    ]
                     (case model of
                         Init ->
-                            [ column [ padding 10, spacing 10 ]
-                                [ text "Functional"
-                                , code [] "sum a b =\n    a + b"
+                            [ column
+                                [ width shrink
+                                , height fill
+                                , spacing 5
+
+                                -- , scrollbarY
                                 ]
-                            , text "- Pure -> No side effects"
-                            , text "- Relativly easy"
+                                [ code
+                                    [ Font.size 24
+                                    , height fill
+                                    , scrollbarY
+                                    ]
+                                    "type alias Model =\n    { count : Int }\n\n\ninit : () -> (Model, Cmd Msg)\ninit () =\n    ( { count = 0 }\n    , Cmd.none\n    )\n\n\ntype Msg\n    = Increment\n    | Decrement\n\nupdate : Msg -> Model -> ( Model, Cmd Msg )\nupdate msg model =\n    case msg of\n        Increment ->\n            ( { model | count = model.count + 1 }\n            , Cmd.none\n            )\n\n        Decrement ->\n            ( { model | count = model.count - 1 }\n            , Cmd.none\n            )\n\n\nview : Model -> Html Msg\nview model =\n    div []\n        [ button [ onClick Increment ] [ text \"+1\" ]\n        , div [] [ text <| String.fromInt model.count ]\n        , button [ onClick Decrement ] [ text \"-1\" ]\n        ]"
+                                , newTabLink
+                                    [ centerX
+                                    , Font.color blue
+                                    , Font.size 24
+                                    ]
+                                    { url = "https://ellie-app.com/k8pLSb2z53Za1"
+                                    , label = text "Execute me in Ellie"
+                                    }
+                                ]
                             ]
 
                         ShowDiagram ->
@@ -184,4 +202,5 @@ viewChart =
             , height fill
             , centerX
             , centerY
+            , Font.size 24
             ]
