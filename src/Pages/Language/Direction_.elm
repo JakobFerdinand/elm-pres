@@ -3,11 +3,12 @@ module Pages.Language.Direction_ exposing (Model, Msg, layout, page)
 import Chart as C
 import Chart.Attributes as CA
 import Chart.Item as CI
-import Colors exposing (blue)
+import Colors exposing (..)
 import Component exposing (code)
 import Effect exposing (Effect)
 import Element exposing (..)
 import Element.Font as Font
+import Html.Attributes exposing (style)
 import KeyListener
 import Layout exposing (Layout)
 import Navigation exposing (navigate)
@@ -93,7 +94,9 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    KeyListener.subscription NavigatePrevious NavigateNext DoNothing
+    Sub.batch
+        [ KeyListener.subscription NavigatePrevious NavigateNext DoNothing
+        ]
 
 
 
@@ -114,27 +117,26 @@ view model =
                     ]
                     (case model of
                         Init ->
+                            let
+                                statement : Color -> String -> Element msg
+                                statement color s =
+                                    el
+                                        [ centerX
+                                        , Font.color color
+                                        ]
+                                    <|
+                                        text s
+                            in
                             [ column
-                                [ width shrink
-                                , height fill
-                                , spacing 5
-
-                                -- , scrollbarY
+                                [ width fill
+                                , centerY
+                                , spacing 20
+                                , Font.size 44
                                 ]
-                                [ code
-                                    [ Font.size 24
-                                    , height fill
-                                    , scrollbarY
-                                    ]
-                                    "type alias Model =\n    { count : Int }\n\n\ninit : () -> (Model, Cmd Msg)\ninit () =\n    ( { count = 0 }\n    , Cmd.none\n    )\n\n\ntype Msg\n    = Increment\n    | Decrement\n\nupdate : Msg -> Model -> ( Model, Cmd Msg )\nupdate msg model =\n    case msg of\n        Increment ->\n            ( { model | count = model.count + 1 }\n            , Cmd.none\n            )\n\n        Decrement ->\n            ( { model | count = model.count - 1 }\n            , Cmd.none\n            )\n\n\nview : Model -> Html Msg\nview model =\n    div []\n        [ button [ onClick Increment ] [ text \"+1\" ]\n        , div [] [ text <| String.fromInt model.count ]\n        , button [ onClick Decrement ] [ text \"-1\" ]\n        ]"
-                                , newTabLink
-                                    [ centerX
-                                    , Font.color blue
-                                    , Font.size 24
-                                    ]
-                                    { url = "https://ellie-app.com/k8pLSb2z53Za1"
-                                    , label = text "Execute me in Ellie"
-                                    }
+                                [ statement blue "functional"
+                                , statement green "strongly typed"
+                                , statement orange "immutable"
+                                , statement blue "pure"
                                 ]
                             ]
 
@@ -154,7 +156,8 @@ viewChart =
             [ { maintainability = 20, useability = 85, language = "JavaScript" }
             , { maintainability = 30, useability = 85, language = "Python" }
             , { maintainability = 40, useability = 85, language = "TypeScript" }
-            , { maintainability = 75, useability = 75, language = "C#" }
+            , { maintainability = 70, useability = 70, language = "C#" }
+            , { maintainability = 85, useability = 85, language = "Rust" }
             , { maintainability = 90, useability = 40, language = "Haskell" }
             , { maintainability = 90, useability = 90, language = "Elm" }
             ]
