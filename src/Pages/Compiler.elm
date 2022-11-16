@@ -124,7 +124,7 @@ viewSample2 : Element msg
 viewSample2 =
     row [ spacing 20 ]
         [ codeBlock [ Font.size 28, centerY ]
-            "gertraud =\n    { firstName = \"Gertraud\"\n    , lastName = \"Steiner\"\n    , age = 58\n    }\n\n\nisOver18years person =\n    person.aeg >= 18\n\n\ncheckAge =\n    isOver18years gertraud"
+            "gertraud =\n    { firstName = \"Gertraud\"\n    , lastName = \"Steiner\"\n    , age = 58\n    }\n\n\nisOver18 person =\n    person.aeg >= 18\n\n\ncheckAge =\n    isOver18 gertraud"
         , image [ width fill ]
             { src = "/missing-field-error.png"
             , description = ""

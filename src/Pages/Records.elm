@@ -112,9 +112,9 @@ viewRecord =
         [ subHeading <| text "Type alias"
         , row
             [ width fill, spacing 20, alignTop ]
-            [ codeBlock [] "viewUserNames :\n    List\n        { firstName : String\n        , lastName : String\n        , age : Int\n        }\nviewUserNames users =\n    users\n        |> List.map viewUser\n"
+            [ codeBlock [] "viewUserNames :\n    List\n        { firstName : String\n        , lastName : String\n        , age : Int\n        }\n    -> Html msg\nviewUserNames users =\n    users\n        |> List.map viewUser\n        |> div []"
             , el [ centerY ] <| text "→"
-            , codeBlock [] "type alias User =\n    { firstName : String\n    , lastName : String\n    , age : Int\n    }\n\n\nviewUserNames : List User\nviewUserNames users =\n    users\n        |> List.map viewUser\n"
+            , codeBlock [] "type alias User =\n    { firstName : String\n    , lastName : String\n    , age : Int\n    }\n\n\nviewUserNames :\n    List User\n    -> Html msg\nviewUserNames users =\n    users\n        |> List.map viewUser\n        |> div []"
             ]
         ]
 
