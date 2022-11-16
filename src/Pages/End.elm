@@ -180,6 +180,10 @@ view model =
                         { url = "https://elm-pres.jakobferdinand.at"
                         , label = text "https://elm-pres.jakobferdinand.at"
                         }
+                    , newTabLink [ Font.color blue, centerX ]
+                        { url = "https://github.com/JakobFerdinand/elm-pres"
+                        , label = text "Code on GitHub"
+                        }
                     ]
                 ]
     , previous = Just NavigatePrevious
