@@ -128,7 +128,7 @@ tangram =
 viewOverview : Element msg
 viewOverview =
     column []
-        [ text "fast and friedly compiler"
+        [ text "fast and friendly compiler"
         , text "small and simple"
         , text "JavaScript interop"
         ]
@@ -137,5 +137,5 @@ viewOverview =
 viewFrameworks : Element msg
 viewFrameworks =
     column []
-        [ text "Not really compareable to WebFrameworks like Angular, React, Vue"
+        [ text "Not really compareable to web frameworks like Angular, React, Vue"
         ]

@@ -197,7 +197,7 @@ viewChart =
             CA.middle
             .min
             [ CA.moveDown 18 ]
-            [ S.text "Useable" ]
+            [ S.text "Usable" ]
         ]
         |> Element.html
         |> el

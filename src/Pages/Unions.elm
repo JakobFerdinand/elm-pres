@@ -129,7 +129,7 @@ view model =
 viewUnionTypes : Element msg
 viewUnionTypes =
     column [ spacing 20 ]
-        [ text "Definded collection of possible states."
+        [ text "Defined collection of possible states."
         , code [] "type Msg\n    = WindowResized Int Int\n    | TextEntered String\n    | SubmitButtonClicked"
         ]
 
