@@ -1,6 +1,7 @@
 module Component exposing
     ( button
     , code
+    , codeBlock
     , heading
     , imageLink
     , subHeading
@@ -12,6 +13,9 @@ import Element.Background as Background
 import Element.Border as Border
 import Element.Events as Events
 import Element.Font as Font
+import Html
+import Route.Path exposing (Path(..))
+import SyntaxHighlight exposing (elm, oneDark, toBlockHtml, toInlineHtml, useTheme)
 
 
 
@@ -20,25 +24,47 @@ import Element.Font as Font
 
 code : List (Attribute msg) -> String -> Element msg
 code attributes source =
-    el
-        (attributes
-            ++ [ Background.color gray
-               , Border.rounded 5
-               , Font.color orange
-               , Font.family
-                    [ Font.external
-                        { name = "Source Code Pro"
-                        , url = "https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap"
-                        }
-                    ]
-               , padding 8
-               ]
-        )
-    <|
-        text source
+    Html.div []
+        [ useTheme oneDark
+        , elm source
+            |> Result.map toInlineHtml
+            |> Result.withDefault
+                (Html.text source)
+        ]
+        |> html
+        |> el attributes
+
+
+codeBlock : List (Attribute msg) -> String -> Element msg
+codeBlock attributes source =
+    Html.div []
+        [ useTheme oneDark
+        , elm source
+            |> Result.map (toBlockHtml (Just 1))
+            |> Result.withDefault
+                (Html.text source)
+        ]
+        |> html
+        |> el attributes
 
 
 
+-- |> el
+--     (attributes
+--         ++ [ Background.color gray
+--            , Border.rounded 5
+--            , Font.color orange
+--            , Font.family
+--                 [ Font.external
+--                     { name = "Source Code Pro"
+--                     , url = "https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap"
+--                     }
+--                 ]
+--            , padding 8
+--            ]
+--     )
+-- <|
+--     text source
 -- Button
 
 

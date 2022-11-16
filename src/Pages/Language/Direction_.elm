@@ -4,7 +4,6 @@ import Chart as C
 import Chart.Attributes as CA
 import Chart.Item as CI
 import Colors exposing (..)
-import Component exposing (code)
 import Effect exposing (Effect)
 import Element exposing (..)
 import Element.Font as Font
@@ -153,13 +152,13 @@ viewChart : Element msg
 viewChart =
     let
         data =
-            [ { maintainability = 20, useability = 85, language = "JavaScript" }
-            , { maintainability = 30, useability = 85, language = "Python" }
-            , { maintainability = 40, useability = 85, language = "TypeScript" }
-            , { maintainability = 70, useability = 70, language = "C#" }
-            , { maintainability = 85, useability = 85, language = "Rust" }
-            , { maintainability = 90, useability = 40, language = "Haskell" }
-            , { maintainability = 90, useability = 90, language = "Elm" }
+            [ { maintainability = 20, useability = 85, language = "JavaScript", color = orangeHex }
+            , { maintainability = 30, useability = 85, language = "Python", color = greenHex }
+            , { maintainability = 40, useability = 85, language = "TypeScript", color = blueHex }
+            , { maintainability = 70, useability = 70, language = "C#", color = greenHex }
+            , { maintainability = 85, useability = 85, language = "Rust", color = orangeHex }
+            , { maintainability = 90, useability = 40, language = "Haskell", color = blueHex }
+            , { maintainability = 90, useability = 90, language = "Elm", color = blueHex }
             ]
     in
     C.chart
@@ -175,8 +174,8 @@ viewChart =
             , CA.highest 100 CA.orHigher
             ]
         ]
-        [ C.xAxis [ CA.color "#6bb6bb" ]
-        , C.yAxis [ CA.color "#6bb6bb" ]
+        [ C.xAxis [ CA.color lightgrayHex ]
+        , C.yAxis [ CA.color lightgrayHex ]
         , C.series .useability
             [ C.scatter .maintainability [ CA.opacity 0, CA.borderWidth 0 ]
                 |> C.variation (\i d -> [ CA.size 150 ])
@@ -185,7 +184,7 @@ viewChart =
         , C.eachDot <|
             \p dot ->
                 [ C.label
-                    [ CA.moveDown 5, CA.color (CI.getColor dot) ]
+                    [ CA.moveDown 5, CA.color (CI.getData dot).color ]
                     [ S.text (CI.getData dot).language ]
                     (CI.getCenter p dot)
                 ]

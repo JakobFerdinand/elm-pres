@@ -1,6 +1,6 @@
 module Pages.Unions exposing (Model, Msg, layout, page)
 
-import Component exposing (code)
+import Component exposing (code, codeBlock)
 import Effect exposing (Effect)
 import Element exposing (..)
 import Element.Font as Font
@@ -130,29 +130,29 @@ viewUnionTypes : Element msg
 viewUnionTypes =
     column [ spacing 20 ]
         [ text "Defined collection of possible states."
-        , code [] "type Msg\n    = WindowResized Int Int\n    | TextEntered String\n    | SubmitButtonClicked"
+        , codeBlock [] "type Msg\n    = WindowResized Int Int\n    | TextEntered String\n    | SubmitButtonClicked"
         ]
 
 
 viewBillionDollarMistake : Element msg
 viewBillionDollarMistake =
     column [ spacing 30 ]
-        [ paragraph []
+        [ row []
             [ text "Elm has no concept of "
-            , code [ Font.size 28 ] "null"
+            , code [] "null"
             , text " !"
             ]
-        , paragraph []
+        , row []
             [ text "Instead there is "
-            , code [ Font.size 28 ] "Maybe"
+            , code [] "Maybe"
             , text " and "
-            , code [ Font.size 28 ] "Result"
+            , code [] "Result"
             ]
-        , code [ Font.size 28 ] "type Maybe a \n    = Just a\n    | Nothing"
-        , code [ Font.size 28 ] "type Result error value\n    = Ok value\n    | Err error"
+        , codeBlock [] "type Maybe a \n    = Just a\n    | Nothing"
+        , codeBlock [] "type Result error value\n    = Ok value\n    | Err error"
         ]
 
 
 viewMaybe : Element msg
 viewMaybe =
-    code [] "type Age\n    = Age Int\n\n\ntoValidAge : Int -> Maybe Age\ntoValidAge input =\n    if input >= 18 then\n        Just (Age input)\n\n    else\n        Nothing\n\n\nparseAge : String -> Maybe Age\nparseAge input =\n    input\n        |> String.toInt\n        |> Maybe.andThen toValidAge"
+    codeBlock [] "type Age\n    = Age Int\n\n\ntoValidAge : Int -> Maybe Age\ntoValidAge input =\n    if input >= 18 then\n        Just (Age input)\n\n    else\n        Nothing\n\n\nparseAge : String -> Maybe Age\nparseAge input =\n    input\n        |> String.toInt\n        |> Maybe.andThen toValidAge"

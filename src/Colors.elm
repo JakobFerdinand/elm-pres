@@ -1,13 +1,4 @@
-module Colors exposing
-    ( black
-    , blue
-    , darkgray
-    , gray
-    , green
-    , lightgray
-    , orange
-    , white
-    )
+module Colors exposing (..)
 
 import Element exposing (..)
 
@@ -15,6 +6,11 @@ import Element exposing (..)
 white : Color
 white =
     rgb255 255 255 255
+
+
+lightgrayHex : String
+lightgrayHex =
+    "#c8c8c8"
 
 
 lightgray : Color
@@ -37,14 +33,29 @@ black =
     rgb 0 0 0
 
 
+blueHex : String
+blueHex =
+    "#60b5cc"
+
+
 blue : Color
 blue =
     rgb255 96 181 204
 
 
+greenHex : String
+greenHex =
+    "#70ad00"
+
+
 green : Color
 green =
     rgb255 112 173 0
+
+
+orangeHex : String
+orangeHex =
+    "#f0ac00"
 
 
 orange : Color

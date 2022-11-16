@@ -1,8 +1,7 @@
 module Pages.Architecture exposing (Model, Msg, layout, page)
 
-import Browser.Navigation as Nav
 import Colors exposing (blue, lightgray)
-import Component exposing (code)
+import Component exposing (codeBlock)
 import Effect exposing (Effect)
 import Element exposing (..)
 import Element.Background as Background
@@ -138,7 +137,7 @@ showWithCode =
     row [ spacing 20, width fill, height fill ]
         [ showDiagram
         , column [ spacing 5, height fill ]
-            [ code
+            [ codeBlock
                 [ centerY
                 , Font.size 20
                 , height fill

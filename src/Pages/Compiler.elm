@@ -1,7 +1,6 @@
 module Pages.Compiler exposing (Model, Msg, layout, page)
 
-import Browser.Navigation as Nav
-import Component exposing (code)
+import Component exposing (codeBlock)
 import Effect exposing (Effect)
 import Element exposing (..)
 import Element.Font as Font
@@ -112,7 +111,7 @@ view model =
 viewSample1 : Element msg
 viewSample1 =
     row [ spacing 20 ]
-        [ code [ Font.size 28, centerY ]
+        [ codeBlock [ Font.size 28, centerY ]
             "\nviewUsersName users =\n    users\n        |> List.nap viewUser\n\n\nviewUser user =\n    row\n        [ spacing 5 ]\n        [ viewSmallUserIcon user\n        , text user.name\n        ]\n"
         , image [ width fill ]
             { src = "/list-map-error.png"
@@ -124,7 +123,7 @@ viewSample1 =
 viewSample2 : Element msg
 viewSample2 =
     row [ spacing 20 ]
-        [ code [ Font.size 28, centerY ]
+        [ codeBlock [ Font.size 28, centerY ]
             "gertraud =\n    { firstName = \"Gertraud\"\n    , lastName = \"Steiner\"\n    , age = 58\n    }\n\n\nisOver18years person =\n    person.aeg >= 18\n\n\ncheckAge =\n    isOver18years gertraud"
         , image [ width fill ]
             { src = "/missing-field-error.png"

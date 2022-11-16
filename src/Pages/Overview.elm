@@ -1,5 +1,6 @@
 module Pages.Overview exposing (Model, Msg, layout, page)
 
+import Colors exposing (green, orange)
 import Effect exposing (Effect)
 import Element exposing (..)
 import Element.Font as Font
@@ -98,7 +99,14 @@ view model =
                 column [ spacing 20 ]
                     [ row [ moveLeft 25 ]
                         [ tangram
-                        , el [ Font.size 44 ] <| text "A delightful language\nfor reliable webapps."
+                        , column [ Font.size 44 ]
+                            [ text "A delightful language"
+                            , row []
+                                [ text "for "
+                                , el [ Font.color green ] <| text "reliable"
+                                , text " webapps."
+                                ]
+                            ]
                         ]
                     , case model of
                         Init ->
