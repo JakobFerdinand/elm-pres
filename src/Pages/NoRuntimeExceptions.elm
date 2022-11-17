@@ -85,7 +85,7 @@ view model =
     { title = "ELM"
     , body =
         Slide
-            { header = text "No runtime exception"
+            { header = text "No runtime exceptions"
             , body =
                 column
                     [ width shrink
