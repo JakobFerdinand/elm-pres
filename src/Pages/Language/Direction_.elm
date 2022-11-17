@@ -143,6 +143,7 @@ view model =
                             [ viewChart ]
                     )
             }
+    , info = Nothing
     , previous = Just NavigatePrevious
     , next = Just NavigateNext
     }

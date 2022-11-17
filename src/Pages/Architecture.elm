@@ -104,6 +104,7 @@ view model =
                     WithCode ->
                         showWithCode
             }
+    , info = Nothing
     , previous = Just NavigatePrevious
     , next = Just NavigateNext
     }

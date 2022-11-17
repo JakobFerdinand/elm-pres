@@ -121,6 +121,7 @@ view model =
                     MaybeExample ->
                         viewMaybe
             }
+    , info = Nothing
     , previous = Just NavigatePrevious
     , next = Just NavigateNext
     }

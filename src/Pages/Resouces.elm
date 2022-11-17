@@ -89,6 +89,7 @@ view model =
             { header = text "Resources"
             , body = viewLinks
             }
+    , info = Nothing
     , previous = Just NavigatePrevious
     , next = Just NavigateNext
     }

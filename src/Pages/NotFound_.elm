@@ -40,6 +40,7 @@ page =
                     , label = text "Return Home"
                     }
                 ]
+    , info = Nothing
     , previous = Nothing
     , next = Nothing
     }

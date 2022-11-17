@@ -1,6 +1,6 @@
 module Pages.Overview exposing (Model, Msg, layout, page)
 
-import Colors exposing (green, orange)
+import Colors exposing (blue, green, orange)
 import Effect exposing (Effect)
 import Element exposing (..)
 import Element.Font as Font
@@ -37,7 +37,7 @@ layout =
 
 type Model
     = Init
-    | WebFrameworks
+    | WebFrameworks Bool
 
 
 init : () -> ( Model, Effect Msg )
@@ -55,6 +55,8 @@ type Msg
     = NavigatePrevious
     | NavigateNext
     | DoNothing
+    | MouseEnteredInfoBox
+    | MouseLeftInfoBox
 
 
 update : Msg -> Model -> ( Model, Effect Msg )
@@ -63,14 +65,26 @@ update msg model =
         ( NavigatePrevious, Init ) ->
             ( model, navigate Path.Home_ )
 
-        ( NavigatePrevious, WebFrameworks ) ->
+        ( NavigatePrevious, WebFrameworks _ ) ->
             ( Init, Effect.none )
 
         ( NavigateNext, Init ) ->
-            ( WebFrameworks, Effect.none )
+            ( WebFrameworks False, Effect.none )
 
-        ( NavigateNext, WebFrameworks ) ->
+        ( NavigateNext, WebFrameworks _ ) ->
             ( model, navigate (Path.Language__Direction_ { direction = "forward" }) )
+
+        ( MouseEnteredInfoBox, Init ) ->
+            ( model, Effect.none )
+
+        ( MouseLeftInfoBox, Init ) ->
+            ( model, Effect.none )
+
+        ( MouseEnteredInfoBox, WebFrameworks _ ) ->
+            ( WebFrameworks True, Effect.none )
+
+        ( MouseLeftInfoBox, WebFrameworks _ ) ->
+            ( WebFrameworks False, Effect.none )
 
         ( DoNothing, _ ) ->
             ( model, Effect.none )
@@ -112,10 +126,22 @@ view model =
                         Init ->
                             viewOverview
 
-                        WebFrameworks ->
+                        WebFrameworks _ ->
                             viewFrameworks
                     ]
             }
+    , info =
+        case model of
+            Init ->
+                Nothing
+
+            WebFrameworks show ->
+                Just
+                    { onMouseEnter = MouseEnteredInfoBox
+                    , onMouseLeave = MouseLeftInfoBox
+                    , showInfoBox = show
+                    , infoBox = viewFrameworksInfo
+                    }
     , previous = Just NavigatePrevious
     , next = Just NavigateNext
     }
@@ -146,4 +172,24 @@ viewFrameworks : Element msg
 viewFrameworks =
     column []
         [ text "Not really compareable to web frameworks like Angular, React, Vue"
+        ]
+
+
+viewFrameworksInfo : Element msg
+viewFrameworksInfo =
+    column [ width fill, spacing 10 ]
+        [ paragraph [ width fill ]
+            [ text "Elm cannot really be compared to frameworks like Angular, React and Vue because even if you use them you are going to write TypeScript or Javascript."
+            ]
+        , paragraph [ width fill ]
+            [ text "But if you use Elm you write Elm code. That is a completly different language."
+            ]
+        , paragraph [ width fill ]
+            [ text "For more infos watch "
+            , newTabLink [ Font.color blue ]
+                { url = "https://www.youtube.com/watch?v=ukVqQGbxM9A&t=280s"
+                , label = text "that talk from Richard Feldman"
+                }
+            , text " about Rust and Elm."
+            ]
         ]

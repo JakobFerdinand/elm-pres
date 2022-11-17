@@ -115,6 +115,7 @@ view model =
                         }
                     ]
             }
+    , info = Nothing
     , previous = Just NavigatePrevious
     , next = Just NavigateNext
     }

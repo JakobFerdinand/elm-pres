@@ -3,6 +3,15 @@ module Colors exposing (..)
 import Element exposing (..)
 
 
+withAlpha : Float -> Color -> Color
+withAlpha alpha color =
+    let
+        rgbColor =
+            toRgb color
+    in
+    fromRgb { rgbColor | alpha = alpha }
+
+
 white : Color
 white =
     rgb255 255 255 255

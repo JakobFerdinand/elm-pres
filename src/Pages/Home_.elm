@@ -161,6 +161,7 @@ view model =
                         ]
                     ]
                 ]
+    , info = Nothing
     , previous = Nothing
     , next = Just NavigateNext
     }

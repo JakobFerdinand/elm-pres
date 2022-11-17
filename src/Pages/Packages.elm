@@ -90,6 +90,7 @@ view model =
             { header = text "My favourite packages"
             , body = viewLinks
             }
+    , info = Nothing
     , previous = Just NavigatePrevious
     , next = Just NavigateNext
     }

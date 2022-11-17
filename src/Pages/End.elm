@@ -186,6 +186,7 @@ view model =
                         }
                     ]
                 ]
+    , info = Nothing
     , previous = Just NavigatePrevious
     , next = Nothing
     }

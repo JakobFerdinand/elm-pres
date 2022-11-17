@@ -2,7 +2,7 @@ module View exposing
     ( View, map
     , none, fromString
     , toBrowserDocument
-    , Slide(..)
+    , InfoBox, Slide(..)
     )
 
 {-|
@@ -19,11 +19,21 @@ import Component exposing (heading)
 import Element exposing (..)
 import Element.Background as Background
 import Element.Font as Font
+import Time exposing (Month(..))
+
+
+type alias InfoBox msg =
+    { onMouseEnter : msg
+    , onMouseLeave : msg
+    , showInfoBox : Bool
+    , infoBox : Element msg
+    }
 
 
 type alias View msg =
     { title : String
     , body : Slide msg
+    , info : Maybe (InfoBox msg)
     , previous : Maybe msg
     , next : Maybe msg
     }
@@ -93,8 +103,18 @@ map fn view =
                     { header = Element.map fn header
                     , body = Element.map fn body
                     }
+    , info = view.info |> Maybe.map (mapInfoBox fn)
     , previous = view.previous |> Maybe.map fn
     , next = view.next |> Maybe.map fn
+    }
+
+
+mapInfoBox : (msg1 -> msg2) -> InfoBox msg1 -> InfoBox msg2
+mapInfoBox fn infoBox =
+    { onMouseEnter = fn infoBox.onMouseEnter
+    , onMouseLeave = fn infoBox.onMouseLeave
+    , showInfoBox = infoBox.showInfoBox
+    , infoBox = infoBox.infoBox |> Element.map fn
     }
 
 
@@ -105,6 +125,7 @@ none : View msg
 none =
     { title = ""
     , body = Header <| Element.none
+    , info = Nothing
     , next = Nothing
     , previous = Nothing
     }
@@ -121,6 +142,7 @@ fromString : String -> View msg
 fromString moduleName =
     { title = moduleName
     , body = Header <| Element.text moduleName
+    , info = Nothing
     , next = Nothing
     , previous = Nothing
     }

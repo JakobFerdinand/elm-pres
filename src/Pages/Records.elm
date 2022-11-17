@@ -101,6 +101,7 @@ view model =
                     ExtensibleRecord ->
                         viewExtensibleRecord
             }
+    , info = Nothing
     , previous = Just NavigatePrevious
     , next = Just NavigateNext
     }
