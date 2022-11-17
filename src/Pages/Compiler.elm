@@ -113,9 +113,9 @@ viewSample1 : Element msg
 viewSample1 =
     row [ spacing 20, width fill ]
         [ codeBlock [ Font.size 28, centerY ]
-            "\nviewUsersName users =\n    users\n        |> List.nap viewUser\n\n\nviewUser user =\n    row\n        [ spacing 5 ]\n        [ viewSmallUserIcon user\n        , text user.name\n        ]\n"
+            "allPossibleNumbers =\n                [ 2.4, 17, \"1000\", 8 ]"
         , image [ width fill ]
-            { src = "/list-map-error.png"
+            { src = "/types-not-matching-error.png"
             , description = ""
             }
         ]
