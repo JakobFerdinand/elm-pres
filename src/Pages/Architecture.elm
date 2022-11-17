@@ -99,7 +99,7 @@ view model =
             , body =
                 case model of
                     Init ->
-                        showDiagram
+                        showDiagram [ centerX ]
 
                     WithCode ->
                         showWithCode
@@ -110,11 +110,17 @@ view model =
     }
 
 
-showDiagram : Element msg
-showDiagram =
-    column [ width fill, height fill, spacing 5 ]
+showDiagram : List (Attribute msg) -> Element msg
+showDiagram attributes =
+    column
+        (attributes
+            ++ [ width (fill |> maximum 700)
+               , height fill
+               , spacing 5
+               ]
+        )
         [ image
-            [ width (fill |> maximum 700)
+            [ width fill
             , Background.color lightgray
             , Border.rounded 5
             , centerX
@@ -135,16 +141,17 @@ showDiagram =
 
 showWithCode : Element msg
 showWithCode =
-    row [ spacing 20, width fill, height fill ]
-        [ showDiagram
+    row [ spacing 50, height fill, centerX ]
+        [ showDiagram [ alignLeft ]
         , column [ spacing 5, height fill ]
-            [ codeBlock
-                [ centerY
-                , Font.size 20
-                , height fill
-                , scrollbarY
-                ]
-                "type alias Model =\n    { count : Int }\n\n\ninit : () -> (Model, Cmd Msg)\ninit () =\n    ( { count = 0 }\n    , Cmd.none\n    )\n\n\ntype Msg\n    = Increment\n    | Decrement\n\n\nupdate : Msg -> Model -> ( Model, Cmd Msg )\nupdate msg model =\n    case msg of\n        Increment ->\n            ( { model | count = model.count + 1 }\n            , Cmd.none\n            )\n\n        Decrement ->\n            ( { model | count = model.count - 1 }\n            , Cmd.none\n            )\n\n\nview : Model -> Html Msg\nview model =\n    div []\n        [ button [ onClick Increment ] [ text \"+1\" ]\n        , div [] [ text <| String.fromInt model.count ]\n        , button [ onClick Decrement ] [ text \"-1\" ]\n        ]"
+            [ el [ alignTop ] <|
+                codeBlock
+                    [ Font.size 20
+                    , height fill
+                    , scrollbarY
+                    , moveUp 20
+                    ]
+                    "type alias Model =\n    { count : Int }\n\n\ninit : () -> (Model, Cmd Msg)\ninit () =\n    ( { count = 0 }\n    , Cmd.none\n    )\n\n\ntype Msg\n    = Increment\n    | Decrement\n\n\nupdate : Msg -> Model -> ( Model, Cmd Msg )\nupdate msg model =\n    case msg of\n        Increment ->\n            ( { model | count = model.count + 1 }\n            , Cmd.none\n            )\n\n        Decrement ->\n            ( { model | count = model.count - 1 }\n            , Cmd.none\n            )\n\n\nview : Model -> Html Msg\nview model =\n    div []\n        [ button [ onClick Increment ] [ text \"+1\" ]\n        , div [] [ text <| String.fromInt model.count ]\n        , button [ onClick Decrement ] [ text \"-1\" ]\n        ]"
             , newTabLink
                 [ centerX
                 , Font.color blue
