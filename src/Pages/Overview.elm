@@ -171,7 +171,7 @@ viewOverview =
 viewFrameworks : Element msg
 viewFrameworks =
     column []
-        [ text "Not really compareable to web frameworks like Angular, React, Vue"
+        [ text "Not really comparable to web frameworks like Angular, React, Vue"
         ]
 
 

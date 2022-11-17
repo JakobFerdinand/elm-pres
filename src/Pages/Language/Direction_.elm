@@ -132,10 +132,11 @@ view model =
                                 , spacing 20
                                 , Font.size 44
                                 ]
-                                [ statement blue "functional"
-                                , statement green "strongly typed"
-                                , statement orange "immutable"
-                                , statement blue "pure"
+                                [ statement green "functional"
+                                , statement blue "strongly typed"
+                                , statement orange "statically typed"
+                                , statement blue "immutable"
+                                , statement green "pure"
                                 ]
                             ]
 
