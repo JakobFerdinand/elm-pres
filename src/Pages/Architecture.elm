@@ -144,7 +144,7 @@ showWithCode =
     row [ spacing 50, height fill, centerX ]
         [ showDiagram [ alignLeft ]
         , column [ spacing 5, height fill ]
-            [ el [ alignTop ] <|
+            [ el [ alignTop, height fill ] <|
                 codeBlock
                     [ Font.size 20
                     , height fill
