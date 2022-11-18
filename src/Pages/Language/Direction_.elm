@@ -39,21 +39,21 @@ layout =
 
 
 type Model
-    = Init
-    | ShowDiagram
+    = Init Bool
+    | ShowDiagram Bool
 
 
 init : String -> () -> ( Model, Effect Msg )
 init param () =
     ( case param of
         "backward" ->
-            ShowDiagram
+            ShowDiagram False
 
         "forward" ->
-            Init
+            Init False
 
         _ ->
-            Init
+            Init False
     , Effect.none
     )
 
@@ -66,22 +66,36 @@ type Msg
     = NavigatePrevious
     | NavigateNext
     | DoNothing
+    | MouseEnteredInfoBox
+    | MouseLeftInfoBox
 
 
 update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
     case ( msg, model ) of
-        ( NavigatePrevious, Init ) ->
+        ( NavigatePrevious, Init _ ) ->
             ( model, navigate Path.Overview )
 
-        ( NavigatePrevious, ShowDiagram ) ->
-            ( Init, Effect.none )
+        ( NavigatePrevious, ShowDiagram _ ) ->
+            ( Init False, Effect.none )
 
-        ( NavigateNext, Init ) ->
-            ( ShowDiagram, Effect.none )
+        ( NavigateNext, Init _ ) ->
+            ( ShowDiagram False, Effect.none )
 
-        ( NavigateNext, ShowDiagram ) ->
+        ( NavigateNext, ShowDiagram _ ) ->
             ( model, navigate Path.Compiler )
+
+        ( MouseEnteredInfoBox, Init _ ) ->
+            ( Init True, Effect.none )
+
+        ( MouseLeftInfoBox, Init _ ) ->
+            ( Init False, Effect.none )
+
+        ( MouseEnteredInfoBox, ShowDiagram _ ) ->
+            ( ShowDiagram True, Effect.none )
+
+        ( MouseLeftInfoBox, ShowDiagram _ ) ->
+            ( ShowDiagram False, Effect.none )
 
         ( DoNothing, _ ) ->
             ( model, Effect.none )
@@ -115,39 +129,85 @@ view model =
                     , height fill
                     ]
                     (case model of
-                        Init ->
-                            let
-                                statement : Color -> String -> Element msg
-                                statement color s =
-                                    el
-                                        [ centerX
-                                        , Font.color color
-                                        ]
-                                    <|
-                                        text s
-                            in
-                            [ column
-                                [ width fill
-                                , centerY
-                                , spacing 20
-                                , Font.size 44
-                                ]
-                                [ statement green "functional"
-                                , statement blue "strongly typed"
-                                , statement orange "statically typed"
-                                , statement blue "immutable"
-                                , statement green "pure"
-                                ]
-                            ]
+                        Init _ ->
+                            viewLanguageHighlights
 
-                        ShowDiagram ->
+                        ShowDiagram _ ->
                             [ viewChart ]
                     )
             }
-    , info = Nothing
+    , info =
+        Just
+            { onMouseEnter = MouseEnteredInfoBox
+            , onMouseLeave = MouseLeftInfoBox
+            , showInfoBox =
+                case model of
+                    Init show ->
+                        show
+
+                    ShowDiagram show ->
+                        show
+            , infoBox =
+                case model of
+                    Init _ ->
+                        viewLanguageHighlightsInfo
+
+                    ShowDiagram _ ->
+                        viewChartInfo
+            }
     , previous = Just NavigatePrevious
     , next = Just NavigateNext
     }
+
+
+viewLanguageHighlights : List (Element msg)
+viewLanguageHighlights =
+    let
+        statement : Color -> String -> Element msg
+        statement color s =
+            el
+                [ centerX
+                , Font.color color
+                ]
+            <|
+                text s
+    in
+    [ column
+        [ width fill
+        , centerY
+        , spacing 20
+        , Font.size 44
+        ]
+        [ statement green "functional"
+        , statement blue "strongly typed"
+        , statement orange "statically typed"
+        , statement blue "immutable"
+        , statement green "pure"
+        ]
+    ]
+
+
+viewLanguageHighlightsInfo : Element msg
+viewLanguageHighlightsInfo =
+    column [ width fill, spacing 10 ]
+        [ paragraph [ width fill ]
+            [ text "For more infos about strong and static types take a look at "
+            , newTabLink [ Font.color blue ]
+                { url = "https://dev.to/leolas95/static-and-dynamic-typing-strong-and-weak-typing-5b0m"
+                , label = text "that article about the differences"
+                }
+            , text "."
+            ]
+        , paragraph [ width fill ]
+            [ text "Immutable means that a value can never be changed. "
+            , text "Every time you want to change for example the field of a record"
+            , text "it is required to create a new instance of the record with the updated field."
+            ]
+        , paragraph [ width fill ]
+            [ text "Pure means that a function always provides the same output when given the same input. "
+            , text "Also no side-effects can happen."
+            ]
+        ]
 
 
 viewChart : Element msg
@@ -208,3 +268,8 @@ viewChart =
             , centerY
             , Font.size 24
             ]
+
+
+viewChartInfo : Element msg
+viewChartInfo =
+    none

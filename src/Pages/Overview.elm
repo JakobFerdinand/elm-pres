@@ -36,13 +36,13 @@ layout =
 
 
 type Model
-    = Init
+    = Init Bool
     | WebFrameworks Bool
 
 
 init : () -> ( Model, Effect Msg )
 init () =
-    ( Init
+    ( Init False
     , Effect.none
     )
 
@@ -62,23 +62,23 @@ type Msg
 update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
     case ( msg, model ) of
-        ( NavigatePrevious, Init ) ->
+        ( NavigatePrevious, Init _ ) ->
             ( model, navigate Path.Home_ )
 
         ( NavigatePrevious, WebFrameworks _ ) ->
-            ( Init, Effect.none )
+            ( Init False, Effect.none )
 
-        ( NavigateNext, Init ) ->
+        ( NavigateNext, Init _ ) ->
             ( WebFrameworks False, Effect.none )
 
         ( NavigateNext, WebFrameworks _ ) ->
             ( model, navigate (Path.Language__Direction_ { direction = "forward" }) )
 
-        ( MouseEnteredInfoBox, Init ) ->
-            ( model, Effect.none )
+        ( MouseEnteredInfoBox, Init _ ) ->
+            ( Init True, Effect.none )
 
-        ( MouseLeftInfoBox, Init ) ->
-            ( model, Effect.none )
+        ( MouseLeftInfoBox, Init _ ) ->
+            ( Init False, Effect.none )
 
         ( MouseEnteredInfoBox, WebFrameworks _ ) ->
             ( WebFrameworks True, Effect.none )
@@ -123,7 +123,7 @@ view model =
                             ]
                         ]
                     , case model of
-                        Init ->
+                        Init _ ->
                             viewOverview
 
                         WebFrameworks _ ->
@@ -131,17 +131,24 @@ view model =
                     ]
             }
     , info =
-        case model of
-            Init ->
-                Nothing
+        Just
+            { onMouseEnter = MouseEnteredInfoBox
+            , onMouseLeave = MouseLeftInfoBox
+            , showInfoBox =
+                case model of
+                    Init show ->
+                        show
 
-            WebFrameworks show ->
-                Just
-                    { onMouseEnter = MouseEnteredInfoBox
-                    , onMouseLeave = MouseLeftInfoBox
-                    , showInfoBox = show
-                    , infoBox = viewFrameworksInfo
-                    }
+                    WebFrameworks show ->
+                        show
+            , infoBox =
+                case model of
+                    Init _ ->
+                        viewOverviewInfo
+
+                    WebFrameworks _ ->
+                        viewFrameworksInfo
+            }
     , previous = Just NavigatePrevious
     , next = Just NavigateNext
     }
@@ -165,6 +172,23 @@ viewOverview =
         [ text "fast and friendly compiler"
         , text "small and simple"
         , text "JavaScript interop"
+        ]
+
+
+viewOverviewInfo : Element msg
+viewOverviewInfo =
+    column [ width fill, spacing 10 ]
+        [ paragraph [ width fill ]
+            [ text "The elm compiler is really fast and provieds great and friendly error messages."
+            ]
+        , paragraph [ width fill ]
+            [ text "For more infos and exmaples take a look at the "
+            , link [ Font.color blue ]
+                { url = "/compiler"
+                , label = text "slides about the compiler"
+                }
+            , text "."
+            ]
         ]
 
 
